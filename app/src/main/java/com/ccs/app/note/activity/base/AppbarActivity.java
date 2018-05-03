@@ -65,11 +65,9 @@ public class AppbarActivity extends BaseActivity {
         if(collapsingToolbar != null && collapsingToolbar.isTitleEnabled())
             collapsingToolbar.setTitle(text);
 
-        else if(getSupportActionBar() != null)
-            getSupportActionBar().setTitle(text);
+        else if(getSupportActionBar() != null) getSupportActionBar().setTitle(text);
 
-        else if(toolbar != null)
-            toolbar.setTitle(text);
+        else if(toolbar != null) toolbar.setTitle(text);
 
         else super.setTitle(text);
     }

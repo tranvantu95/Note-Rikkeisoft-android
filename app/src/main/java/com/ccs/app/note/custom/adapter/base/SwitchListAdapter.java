@@ -1,5 +1,7 @@
 package com.ccs.app.note.custom.adapter.base;
 
+import android.support.annotation.NonNull;
+import android.support.v7.util.DiffUtil;
 import android.view.View;
 
 public abstract class SwitchListAdapter<Item, VH extends SwitchListAdapter.ViewHolder<Item, ?>>
@@ -23,8 +25,8 @@ public abstract class SwitchListAdapter<Item, VH extends SwitchListAdapter.ViewH
 
     private int typeView;
 
-    public SwitchListAdapter(OnItemClickListener onItemClickListener) {
-        super(onItemClickListener);
+    public SwitchListAdapter(OnItemClickListener onItemClickListener, @NonNull DiffUtil.ItemCallback<Item> diffCallback) {
+        super(onItemClickListener, diffCallback);
     }
 
     public int getTypeView() {

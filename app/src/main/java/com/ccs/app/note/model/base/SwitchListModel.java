@@ -9,6 +9,11 @@ public class SwitchListModel<Item> extends ListModel<Item> {
     public static final int LIST = SwitchListAdapter.LIST_VIEW;
     public static final int GRID = SwitchListAdapter.GRID_VIEW;
 
-    public MutableLiveData<Integer> typeView = new MutableLiveData<>();
+    protected MutableLiveData<Integer> typeView = new MutableLiveData<>();
+
+    public MutableLiveData<Integer> getTypeView() {
+        if(typeView == null) typeView = new MutableLiveData<>();
+        return typeView;
+    }
 
 }

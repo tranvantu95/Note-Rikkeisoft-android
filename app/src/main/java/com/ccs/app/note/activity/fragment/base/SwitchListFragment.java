@@ -1,4 +1,4 @@
-package com.ccs.app.note.activity.base;
+package com.ccs.app.note.activity.fragment.base;
 
 import android.arch.lifecycle.Observer;
 import android.os.Bundle;
@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.ccs.app.note.activity.fragment.base.ListFragment;
 import com.ccs.app.note.custom.adapter.base.SwitchListAdapter;
 import com.ccs.app.note.model.base.SwitchListModel;
 
@@ -25,7 +26,7 @@ public abstract class SwitchListFragment<Item,
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        model.typeView.observe(this, new Observer<Integer>() {
+        model.getTypeView().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(@Nullable Integer integer) {
                 if(integer != null) setTypeView(integer);

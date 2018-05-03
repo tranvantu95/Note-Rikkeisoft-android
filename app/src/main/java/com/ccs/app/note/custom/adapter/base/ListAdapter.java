@@ -1,5 +1,8 @@
 package com.ccs.app.note.custom.adapter.base;
 
+import android.arch.paging.PagedListAdapter;
+import android.support.annotation.NonNull;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,34 +11,38 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.annotations.NonNull;
-
 public abstract class ListAdapter<Item, VH extends ListAdapter.ViewHolder<Item, ?>>
-        extends RecyclerView.Adapter<VH> {
+        extends PagedListAdapter<Item, VH> {
 
-    private List<Item> items = new ArrayList<>();
+//    private List<Item> items = new ArrayList<>();
 
     private OnItemClickListener onItemClickListener;
 
-    public ListAdapter(OnItemClickListener onItemClickListener) {
+    public ListAdapter(OnItemClickListener onItemClickListener, @NonNull DiffUtil.ItemCallback<Item> diffCallback) {
+        super(diffCallback);
         this.onItemClickListener = onItemClickListener;
     }
 
-    public Item getItem(int index) {
-        return items.get(index);
-    }
-
-    public void addItem(Item item) {
-        items.add(item);
-    }
-
-    public List<Item> getItems() {
-        return items;
-    }
-
-    public void setItems(List<Item> items) {
-        this.items = items;
-    }
+//    @Override
+//    public int getItemCount() {
+//        return items.size();
+//    }
+//
+//    public Item getItem(int index) {
+//        return items.get(index);
+//    }
+//
+//    public void addItem(Item item) {
+//        items.add(item);
+//    }
+//
+//    public List<Item> getItems() {
+//        return items;
+//    }
+//
+//    public void setItems(List<Item> items) {
+//        this.items = items;
+//    }
 
     public OnItemClickListener getOnItemClickListener() {
         return onItemClickListener;
@@ -59,11 +66,6 @@ public abstract class ListAdapter<Item, VH extends ListAdapter.ViewHolder<Item, 
     public void onBindViewHolder(@NonNull VH holder, int position) {
         Item item = getItem(position);
         holder.setItem(item, position);
-    }
-
-    @Override
-    public int getItemCount() {
-        return items.size();
     }
 
     public static class ViewHolder<Item, RA extends ListAdapter<Item, ?>>

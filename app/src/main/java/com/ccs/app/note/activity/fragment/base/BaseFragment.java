@@ -1,4 +1,4 @@
-package com.ccs.app.note.activity.base;
+package com.ccs.app.note.activity.fragment.base;
 
 import android.app.Activity;
 import android.arch.lifecycle.ViewModel;
@@ -108,9 +108,9 @@ public abstract class BaseFragment<Model extends ViewModel> extends Fragment {
     }
 
     // abstract
-    protected abstract Model onCreateModel();
-
     protected abstract int getFragmentLayoutId();
+
+    protected abstract Model onCreateModel();
 
     // Model
     protected <Model extends ViewModel> Model getAppModel(Class<Model> clazz) {

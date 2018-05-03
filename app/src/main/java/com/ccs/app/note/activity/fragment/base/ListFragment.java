@@ -1,6 +1,8 @@
-package com.ccs.app.note.activity.base;
+package com.ccs.app.note.activity.fragment.base;
 
 import android.arch.lifecycle.Observer;
+import android.arch.paging.DataSource;
+import android.arch.paging.PagedList;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.ccs.app.note.R;
+import com.ccs.app.note.activity.fragment.base.BaseFragment;
 import com.ccs.app.note.custom.adapter.base.ListAdapter;
 import com.ccs.app.note.model.base.ListModel;
 
@@ -35,12 +38,7 @@ public abstract class ListFragment<Item,
         listAdapter = onCreateListAdapter();
         divider = onCreateDivider();
 
-        model.items.observe(this, new Observer<List<Item>>() {
-            @Override
-            public void onChanged(@Nullable List<Item> items) {
-                if (items != null) updateListAdapter(items);
-            }
-        });
+        observePagedList();
     }
 
     @Override
@@ -60,7 +58,20 @@ public abstract class ListFragment<Item,
         listView = null;
     }
 
+    protected void observePagedList() {
+        model.getItems(getDataSourceFactory(), getPagedListConfig()).observe(this, new Observer<PagedList<Item>>() {
+            @Override
+            public void onChanged(@Nullable PagedList<Item> items) {
+                if (items != null) updateListAdapter(items);
+            }
+        });
+    }
+
     // abstract
+    protected abstract DataSource.Factory<Integer, Item> getDataSourceFactory();
+
+    protected abstract PagedList.Config getPagedListConfig();
+
     protected abstract RecyclerView.LayoutManager onCreateLayoutManager();
 
     protected abstract LA onCreateListAdapter();
@@ -68,10 +79,10 @@ public abstract class ListFragment<Item,
     protected abstract int onCreateDivider();
 
     // update
-    protected void updateListAdapter(@NonNull List<Item> items) {
+    protected void updateListAdapter(@NonNull PagedList<Item> items) {
         Log.d(getClass().getSimpleName(), "updateListAdapter");
-        listAdapter.setItems(items);
-        listAdapter.notifyDataSetChanged();
+        listAdapter.submitList(items);
+//        listAdapter.notifyDataSetChanged();
     }
 
     protected void updateListView() {

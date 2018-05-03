@@ -44,6 +44,12 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(getClass().getSimpleName(), "onSaveInstanceState");
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         Log.d(getClass().getSimpleName(), "onCreateOptionsMenu");
         return super.onCreateOptionsMenu(menu);
