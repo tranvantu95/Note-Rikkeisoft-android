@@ -59,7 +59,7 @@ public abstract class SwitchListAdapter<Item, VH extends SwitchListAdapter.ViewH
     @LayoutRes
     protected abstract int getItemGridLayoutId(int viewType);
 
-    public static class ViewHolder<Item, RA extends SwitchListAdapter<Item, ?>>
+    public static abstract class ViewHolder<Item, RA extends SwitchListAdapter<Item, ?>>
             extends ListAdapter.ViewHolder<Item, RA> {
 
         public ViewHolder(RA adapter, View itemView) {

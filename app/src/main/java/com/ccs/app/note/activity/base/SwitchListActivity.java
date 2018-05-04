@@ -54,17 +54,18 @@ public abstract class SwitchListActivity extends AppbarActivity {
 
     private void setChecked(int typeView) {
         if(typeViewMenu == null) return;
+        Log.d(Debug.TAG + getClass().getSimpleName(), "setChecked " + SwitchListAdapter.getTypeView(typeView));
         clearChecked(typeViewMenu);
         setChecked(typeViewMenu.findItem(getTypeViewMenuItemId(typeView)), true);
     }
 
-    private void clearChecked(@NonNull Menu menu) {
+    public static void clearChecked(@NonNull Menu menu) {
         for(int i = menu.size() - 1; i >= 0; i--) {
             setChecked(menu.getItem(i), false);
         }
     }
 
-    private void setChecked(@Nullable MenuItem item, boolean isChecked) {
+    public static void setChecked(@Nullable MenuItem item, boolean isChecked) {
         if(item == null) return;
         item.setChecked(isChecked);
 
@@ -81,8 +82,11 @@ public abstract class SwitchListActivity extends AppbarActivity {
         MenuItem typeViewMenuItem = menu.findItem(R.id.type_view);
         
         if(typeViewMenuItem != null) {
-            typeViewMenu = typeViewMenuItem.getSubMenu();
-            setChecked(typeView);
+            Menu typeViewMenu = typeViewMenuItem.getSubMenu();
+            if(this.typeViewMenu != typeViewMenu) {
+                this.typeViewMenu = typeViewMenu;
+                setChecked(typeView);
+            }
         }
 
         return b;

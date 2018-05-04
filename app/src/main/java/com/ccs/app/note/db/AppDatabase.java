@@ -9,8 +9,13 @@ import com.ccs.app.note.db.dao.NoteDao;
 import com.ccs.app.note.db.entity.Note;
 import com.ccs.app.note.model.item.NoteItem;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 @Database(entities = {Note.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
+
+    public static final ExecutorService executor = Executors.newSingleThreadExecutor();
 
     private static final String DATABASE_NAME = "app_database";
 

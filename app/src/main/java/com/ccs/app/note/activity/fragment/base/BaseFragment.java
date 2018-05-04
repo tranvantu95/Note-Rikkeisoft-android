@@ -12,6 +12,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -26,6 +28,8 @@ public abstract class BaseFragment<Model extends ViewModel> extends Fragment {
     public static final int APP_MODEL = 1;
     public static final int ACTIVITY_MODEL = 2;
     public static final int PARENT_FRAGMENT_MODEL = 3;
+
+    protected int modelOwner = ACTIVITY_MODEL;
 
     protected Model model;
 
@@ -46,6 +50,7 @@ public abstract class BaseFragment<Model extends ViewModel> extends Fragment {
         super.onCreate(savedInstanceState);
         Log.d(Debug.TAG + getClass().getSimpleName(), "onCreate");
 
+        modelOwner = getModelOwner();
         model = onCreateModel();
     }
 
@@ -110,12 +115,30 @@ public abstract class BaseFragment<Model extends ViewModel> extends Fragment {
         Log.d(Debug.TAG + getClass().getSimpleName(), "onDetach");
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        Log.d(Debug.TAG + getClass().getSimpleName(), "onCreateOptionsMenu");
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        Log.d(Debug.TAG + getClass().getSimpleName(), "onPrepareOptionsMenu");
+    }
+
     // abstract
     @LayoutRes
     protected abstract int getFragmentLayoutId();
 
     @NonNull
     protected abstract Model onCreateModel();
+
+    //
+    protected int getModelOwner() {
+        if(getArguments() != null) return getArguments().getInt(MODEL_OWNER, modelOwner);
+        return modelOwner;
+    }
 
     // Model
     protected <Model extends ViewModel> Model getAppModel(Class<Model> clazz) {

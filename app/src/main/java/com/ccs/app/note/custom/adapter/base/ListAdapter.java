@@ -3,6 +3,7 @@ package com.ccs.app.note.custom.adapter.base;
 import android.arch.paging.PagedListAdapter;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -87,7 +88,7 @@ public abstract class ListAdapter<Item, VH extends ListAdapter.ViewHolder<Item, 
         holder.setItem(item, position);
     }
 
-    public static class ViewHolder<Item, RA extends ListAdapter<Item, ?>>
+    public static abstract class ViewHolder<Item, RA extends ListAdapter<Item, ?>>
             extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         protected RA adapter;
@@ -100,9 +101,15 @@ public abstract class ListAdapter<Item, VH extends ListAdapter.ViewHolder<Item, 
             itemView.setOnClickListener(this);
         }
 
-        public void setItem(Item item, int position) {
+        public void setItem(@Nullable Item item, int position) {
             this.item = item;
+            if(item != null) updateItem(item, position);
+            else clearItem(position);
         }
+
+        protected abstract void updateItem(@NonNull Item item, int position);
+
+        protected abstract void clearItem(int position);
 
         @Override
         public void onClick(View view) {

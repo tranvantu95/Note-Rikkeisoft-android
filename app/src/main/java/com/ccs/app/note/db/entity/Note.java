@@ -7,23 +7,26 @@ import android.arch.persistence.room.PrimaryKey;
 @Entity(tableName = "note")
 public class Note {
 
+    public static final String DATE_CREATE_COLUMN = "date_create";
+    public static final String DATE_EDIT_COLUMN = "date_edit";
+
     @PrimaryKey(autoGenerate = true)
-    private int id;
+    private long id;
 
     @ColumnInfo
     private String note;
 
-    @ColumnInfo(name = "date_create")
+    @ColumnInfo(name = DATE_CREATE_COLUMN)
     private String dateCreate;
 
-    @ColumnInfo(name = "date_edit")
+    @ColumnInfo(name = DATE_EDIT_COLUMN)
     private String dateEdit;
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

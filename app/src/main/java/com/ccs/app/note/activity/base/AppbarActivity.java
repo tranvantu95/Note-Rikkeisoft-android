@@ -35,6 +35,7 @@ public class AppbarActivity extends BaseActivity {
 
     // ActionBar
     protected void setupActionBar() {
+        if(toolbar == null) return;
         toolbar.setContentInsetStartWithNavigation(0);
         setSupportActionBar(toolbar);
     }

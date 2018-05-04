@@ -15,6 +15,7 @@ import android.support.annotation.Nullable;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 
 public class AppUtils {
 
@@ -78,22 +79,22 @@ public class AppUtils {
     }
 
     @Nullable
-    public static Fragment addFragment(FragmentManager fragmentManager, @IdRes int containerViewId, Class<? extends Fragment> clazz) {
+    public static Fragment addFragment(FragmentManager fragmentManager, @IdRes int containerViewId, Class<? extends Fragment> clazz, boolean addToBackStack) {
         Fragment fragment = getFragment(fragmentManager, clazz);
-        if(fragment != null) addFragment(fragmentManager, containerViewId, fragment);
+        if(fragment != null) addFragment(fragmentManager, containerViewId, fragment, addToBackStack);
         return fragment;
     }
 
-    public static void addFragment(FragmentManager fragmentManager, @IdRes int containerViewId, Fragment fragment) {
-        addFragment(fragmentManager, containerViewId, fragment, fragment.getClass().getName());
+    public static void addFragment(FragmentManager fragmentManager, @IdRes int containerViewId, Fragment fragment, boolean addToBackStack) {
+        addFragment(fragmentManager, containerViewId, fragment, fragment.getClass().getName(), addToBackStack);
     }
 
-    public static void addFragment(FragmentManager fragmentManager, @IdRes int containerViewId, Fragment fragment, String tag) {
+    public static void addFragment(FragmentManager fragmentManager, @IdRes int containerViewId, Fragment fragment, String tag, boolean addToBackStack) {
         if(fragment.isAdded()) return;
-
-        fragmentManager.beginTransaction()
-                .add(containerViewId, fragment, tag)
-                .commit();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.add(containerViewId, fragment, tag);
+        if(addToBackStack) fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     // Activity
