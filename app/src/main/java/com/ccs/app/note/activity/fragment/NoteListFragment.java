@@ -169,7 +169,7 @@ public class NoteListFragment extends SwitchListFragment<NoteItem, NoteListModel
                 if(items == null) return;
                 NoteItem item = items.get(position);
                 if(item == null) return;
-                item.isAdded = true;
+                item.setAdded(true);
                 NoteEditModel noteEditModel = getActivityModel(NoteEditModel.class);
                 noteEditModel.getNoteDao().setValue(noteDao);
                 noteEditModel.getNote().setValue(item);
