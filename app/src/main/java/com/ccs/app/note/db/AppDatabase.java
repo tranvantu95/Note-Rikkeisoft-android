@@ -7,6 +7,7 @@ import android.content.Context;
 
 import com.ccs.app.note.db.dao.NoteDao;
 import com.ccs.app.note.db.entity.Note;
+import com.ccs.app.note.model.item.NoteItem;
 
 @Database(entities = {Note.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {

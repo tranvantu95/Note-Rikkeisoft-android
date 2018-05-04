@@ -10,6 +10,8 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.IdRes;
+import android.support.annotation.Nullable;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -44,8 +46,54 @@ public class AppUtils {
     }
 
     // Fragment
-    public static Fragment getPagerFragment(FragmentManager fm, int viewPagerId, int pagerPosition) {
+    public static Fragment findPagerFragment(FragmentManager fm, int viewPagerId, int pagerPosition) {
         return fm.findFragmentByTag("android:switcher:" + viewPagerId + ":" + pagerPosition);
+    }
+
+    @Nullable
+    public static Fragment getFragment(FragmentManager fm, Class<? extends Fragment> clazz, int viewPagerId, int pagerPosition) {
+        Fragment fragment = findPagerFragment(fm, viewPagerId, pagerPosition);
+        if(fragment != null) return fragment;
+        return newInstanceFragment(clazz);
+    }
+
+    @Nullable
+    public static Fragment getFragment(FragmentManager fragmentManager, Class<? extends Fragment> clazz) {
+        Fragment fragment = fragmentManager.findFragmentByTag(clazz.getName());
+        if(fragment != null) return fragment;
+        return newInstanceFragment(clazz);
+    }
+
+    @Nullable
+    private static Fragment newInstanceFragment(Class<? extends Fragment> clazz) {
+        Fragment fragment = null;
+
+        try {
+            fragment = clazz.newInstance();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return fragment;
+    }
+
+    @Nullable
+    public static Fragment addFragment(FragmentManager fragmentManager, @IdRes int containerViewId, Class<? extends Fragment> clazz) {
+        Fragment fragment = getFragment(fragmentManager, clazz);
+        if(fragment != null) addFragment(fragmentManager, containerViewId, fragment);
+        return fragment;
+    }
+
+    public static void addFragment(FragmentManager fragmentManager, @IdRes int containerViewId, Fragment fragment) {
+        addFragment(fragmentManager, containerViewId, fragment, fragment.getClass().getName());
+    }
+
+    public static void addFragment(FragmentManager fragmentManager, @IdRes int containerViewId, Fragment fragment, String tag) {
+        if(fragment.isAdded()) return;
+
+        fragmentManager.beginTransaction()
+                .add(containerViewId, fragment, tag)
+                .commit();
     }
 
     // Activity

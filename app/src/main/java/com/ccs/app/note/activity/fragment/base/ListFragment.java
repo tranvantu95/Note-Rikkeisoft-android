@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.paging.DataSource;
 import android.arch.paging.PagedList;
 import android.os.Bundle;
+import android.support.annotation.Dimension;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.view.View;
 
 import com.ccs.app.note.R;
 import com.ccs.app.note.activity.fragment.base.BaseFragment;
+import com.ccs.app.note.config.Debug;
 import com.ccs.app.note.custom.adapter.base.ListAdapter;
 import com.ccs.app.note.model.base.ListModel;
 
@@ -38,7 +40,7 @@ public abstract class ListFragment<Item,
         listAdapter = onCreateListAdapter();
         divider = onCreateDivider();
 
-        observePagedList();
+        observeItems();
     }
 
     @Override
@@ -58,8 +60,22 @@ public abstract class ListFragment<Item,
         listView = null;
     }
 
-    protected void observePagedList() {
-        model.getItems(getDataSourceFactory(), getPagedListConfig()).observe(this, new Observer<PagedList<Item>>() {
+    // abstract
+    @NonNull
+    protected abstract PagedList.Config getPagedListConfig();
+
+    @NonNull
+    protected abstract RecyclerView.LayoutManager onCreateLayoutManager();
+
+    @NonNull
+    protected abstract LA onCreateListAdapter();
+
+    @Dimension
+    protected abstract int onCreateDivider();
+
+    // observe
+    protected void observeItems() {
+        model.getItems(getPagedListConfig()).observe(this, new Observer<PagedList<Item>>() {
             @Override
             public void onChanged(@Nullable PagedList<Item> items) {
                 if (items != null) updateListAdapter(items);
@@ -67,26 +83,20 @@ public abstract class ListFragment<Item,
         });
     }
 
-    // abstract
-    protected abstract DataSource.Factory<Integer, Item> getDataSourceFactory();
-
-    protected abstract PagedList.Config getPagedListConfig();
-
-    protected abstract RecyclerView.LayoutManager onCreateLayoutManager();
-
-    protected abstract LA onCreateListAdapter();
-
-    protected abstract int onCreateDivider();
+    // set
+    protected void setDataSourceFactory(@Nullable DataSource.Factory<?, Item> factory) {
+        model.getDataSourceFactory().setValue(factory);
+    }
 
     // update
     protected void updateListAdapter(@NonNull PagedList<Item> items) {
-        Log.d(getClass().getSimpleName(), "updateListAdapter");
+        Log.d(Debug.TAG + getClass().getSimpleName(), "updateListAdapter");
         listAdapter.submitList(items);
 //        listAdapter.notifyDataSetChanged();
     }
 
     protected void updateListView() {
-        Log.d(getClass().getSimpleName(), "updateListView");
+        Log.d(Debug.TAG + getClass().getSimpleName(), "updateListView");
         listView.setPadding(divider, divider, divider, divider);
         listView.setLayoutManager(layoutManager);
         listView.setAdapter(listAdapter);

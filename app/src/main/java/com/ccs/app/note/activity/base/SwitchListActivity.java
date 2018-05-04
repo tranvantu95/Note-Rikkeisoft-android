@@ -12,10 +12,11 @@ import android.view.MenuItem;
 
 import com.ccs.app.note.R;
 import com.ccs.app.note.app.base.SwitchListApplication;
+import com.ccs.app.note.config.Debug;
 import com.ccs.app.note.custom.adapter.base.SwitchListAdapter;
 import com.ccs.app.note.model.base.SwitchListModel;
 
-public class SwitchListActivity extends AppbarActivity {
+public abstract class SwitchListActivity extends AppbarActivity {
 
     private Menu typeViewMenu;
 
@@ -36,7 +37,8 @@ public class SwitchListActivity extends AppbarActivity {
             SwitchListApplication.typeView = typeView;
             saveTypeView();
         }
-        
+
+        Log.d(Debug.TAG + getClass().getSimpleName(), "onChangeTypeView " + SwitchListAdapter.getTypeView(typeView));
         onChangeTypeView(typeView);
 
         setChecked(typeView);
@@ -48,9 +50,7 @@ public class SwitchListActivity extends AppbarActivity {
         editor.apply();
     }
 
-    protected void onChangeTypeView(int typeView) {
-        Log.d(getClass().getSimpleName(), "onChangeTypeView " + SwitchListAdapter.getTypeView(typeView));
-    }
+    protected abstract void onChangeTypeView(int typeView);
 
     private void setChecked(int typeView) {
         if(typeViewMenu == null) return;

@@ -1,5 +1,6 @@
 package com.ccs.app.note.custom.adapter.base;
 
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.view.View;
@@ -37,6 +38,7 @@ public abstract class SwitchListAdapter<Item, VH extends SwitchListAdapter.ViewH
         this.typeView = typeView;
     }
 
+    @LayoutRes
     @Override
     protected int getItemLayoutId(int viewType) {
         switch (getTypeView()) {
@@ -51,8 +53,10 @@ public abstract class SwitchListAdapter<Item, VH extends SwitchListAdapter.ViewH
         }
     }
 
+    @LayoutRes
     protected abstract int getItemListLayoutId(int viewType);
 
+    @LayoutRes
     protected abstract int getItemGridLayoutId(int viewType);
 
     public static class ViewHolder<Item, RA extends SwitchListAdapter<Item, ?>>

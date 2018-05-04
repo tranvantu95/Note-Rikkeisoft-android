@@ -1,47 +1,55 @@
 package com.ccs.app.note.custom.adapter;
 
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.view.View;
+import android.widget.TextView;
 
+import com.ccs.app.note.R;
 import com.ccs.app.note.custom.adapter.base.SwitchListAdapter;
 import com.ccs.app.note.db.entity.Note;
+import com.ccs.app.note.model.item.NoteItem;
 
-public class NoteListAdapter extends SwitchListAdapter<Note, NoteListAdapter.ViewHolder> {
-
-    public static final DiffUtil.ItemCallback<Note> diffCallback = new DiffUtil.ItemCallback<Note>() {
-        @Override
-        public boolean areItemsTheSame(Note oldItem, Note newItem) {
-            return oldItem.getId() == newItem.getId();
-        }
-
-        @Override
-        public boolean areContentsTheSame(Note oldItem, Note newItem) {
-            return oldItem.equals(newItem);
-        }
-    };
+public class NoteListAdapter extends SwitchListAdapter<NoteItem, NoteListAdapter.ViewHolder> {
 
     public NoteListAdapter(OnItemClickListener onItemClickListener) {
-        super(onItemClickListener, diffCallback);
+        super(onItemClickListener, createDiffCallback(NoteItem.class));
     }
 
+    @LayoutRes
     @Override
     protected int getItemListLayoutId(int viewType) {
-        return 0;
+        return R.layout.item_list;
     }
 
+    @LayoutRes
     @Override
     protected int getItemGridLayoutId(int viewType) {
-        return 0;
+        return R.layout.item_grid;
     }
 
+    @NonNull
     @Override
     protected ViewHolder getViewHolder(View view, int viewType) {
         return new ViewHolder(this, view);
     }
 
-    public static class ViewHolder extends SwitchListAdapter.ViewHolder<Note, NoteListAdapter> {
+    public static class ViewHolder extends SwitchListAdapter.ViewHolder<NoteItem, NoteListAdapter> {
+
+        private TextView textView;
+
         public ViewHolder(NoteListAdapter adapter, View itemView) {
             super(adapter, itemView);
+
+            textView = itemView.findViewById(R.id.text_view);
+        }
+
+        @Override
+        public void setItem(NoteItem noteItem, int position) {
+            super.setItem(noteItem, position);
+
+            textView.setText(noteItem.getNote());
         }
     }
 

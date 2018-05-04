@@ -5,6 +5,8 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,6 +15,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ccs.app.note.config.Debug;
 import com.ccs.app.note.utils.ViewModelUtils;
 
 public abstract class BaseFragment<Model extends ViewModel> extends Fragment {
@@ -29,19 +32,19 @@ public abstract class BaseFragment<Model extends ViewModel> extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Log.d(getClass().getSimpleName(), "onAttach Context");
+        Log.d(Debug.TAG + getClass().getSimpleName(), "onAttach Context");
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.d(getClass().getSimpleName(), "onAttach Activity");
+        Log.d(Debug.TAG + getClass().getSimpleName(), "onAttach Activity");
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(getClass().getSimpleName(), "onCreate");
+        Log.d(Debug.TAG + getClass().getSimpleName(), "onCreate");
 
         model = onCreateModel();
     }
@@ -49,67 +52,69 @@ public abstract class BaseFragment<Model extends ViewModel> extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d(getClass().getSimpleName(), "onCreateView");
+        Log.d(Debug.TAG + getClass().getSimpleName(), "onCreateView");
         return inflater.inflate(getFragmentLayoutId(), container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(getClass().getSimpleName(), "onViewCreated");
+        Log.d(Debug.TAG + getClass().getSimpleName(), "onViewCreated");
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d(getClass().getSimpleName(), "onActivityCreated");
+        Log.d(Debug.TAG + getClass().getSimpleName(), "onActivityCreated");
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(getClass().getSimpleName(), "onStart");
+        Log.d(Debug.TAG + getClass().getSimpleName(), "onStart");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(getClass().getSimpleName(), "onResume");
+        Log.d(Debug.TAG + getClass().getSimpleName(), "onResume");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Log.d(getClass().getSimpleName(), "onPause");
+        Log.d(Debug.TAG + getClass().getSimpleName(), "onPause");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.d(getClass().getSimpleName(), "onCreate");
+        Log.d(Debug.TAG + getClass().getSimpleName(), "onStop");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.d(getClass().getSimpleName(), "onDestroyView");
+        Log.d(Debug.TAG + getClass().getSimpleName(), "onDestroyView");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(getClass().getSimpleName(), "onDestroy");
+        Log.d(Debug.TAG + getClass().getSimpleName(), "onDestroy");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        Log.d(getClass().getSimpleName(), "onDetach");
+        Log.d(Debug.TAG + getClass().getSimpleName(), "onDetach");
     }
 
     // abstract
+    @LayoutRes
     protected abstract int getFragmentLayoutId();
 
+    @NonNull
     protected abstract Model onCreateModel();
 
     // Model
