@@ -1,16 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <item android:id="@id/type_view"
+        android:title="Type View">
+
+        <menu>
+
+            <item android:id="@id/type_list"
+                android:title="List View" />
+
+            <item android:id="@id/type_grid"
+                android:title="Grid View" />
+
+        </menu>
+
+    </item>
+
     <item android:id="@+id/sort_type"
         android:title="Sort Type">
 
         <menu>
 
-            <item android:id="@+id/sort_by_date_edit"
-                android:title="Sort by date edit" />
-
             <item android:id="@+id/sort_by_date_create"
                 android:title="Sort by date create" />
+
+            <item android:id="@+id/sort_by_date_edit"
+                android:title="Sort by date edit" />
 
         </menu>
 

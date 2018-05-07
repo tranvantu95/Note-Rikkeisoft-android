@@ -11,10 +11,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.ccs.app.note.R;
-import com.ccs.app.note.app.base.SwitchListApplication;
 import com.ccs.app.note.config.Debug;
 import com.ccs.app.note.custom.adapter.base.SwitchListAdapter;
 import com.ccs.app.note.model.base.SwitchListModel;
+import com.ccs.app.note.utils.AppUtils;
+import com.ccs.app.note.utils.General;
 
 public abstract class SwitchListActivity extends AppbarActivity {
 
@@ -26,15 +27,15 @@ public abstract class SwitchListActivity extends AppbarActivity {
     protected void onStart() {
         super.onStart();
 
-        setTypeView(SwitchListApplication.typeView);
+        setTypeView(General.typeView);
     }
 
     private void setTypeView(int typeView) {
         if(this.typeView == typeView) return;
         this.typeView = typeView;
         
-        if(SwitchListApplication.typeView != typeView) {
-            SwitchListApplication.typeView = typeView;
+        if(General.typeView != typeView) {
+            General.typeView = typeView;
             saveTypeView();
         }
 
@@ -45,8 +46,8 @@ public abstract class SwitchListActivity extends AppbarActivity {
     }
 
     private void saveTypeView() {
-        SharedPreferences.Editor editor = getSharedPreferences(SwitchListApplication.DATA, MODE_PRIVATE).edit();
-        editor.putInt(SwitchListApplication.TYPE_VIEW, SwitchListApplication.typeView);
+        SharedPreferences.Editor editor = getSharedPreferences(General.DATA, MODE_PRIVATE).edit();
+        editor.putInt(General.TYPE_VIEW, General.typeView);
         editor.apply();
     }
 
@@ -55,24 +56,8 @@ public abstract class SwitchListActivity extends AppbarActivity {
     private void setChecked(int typeView) {
         if(typeViewMenu == null) return;
         Log.d(Debug.TAG + getClass().getSimpleName(), "setChecked " + SwitchListAdapter.getTypeView(typeView));
-        clearChecked(typeViewMenu);
-        setChecked(typeViewMenu.findItem(getTypeViewMenuItemId(typeView)), true);
-    }
-
-    public static void clearChecked(@NonNull Menu menu) {
-        for(int i = menu.size() - 1; i >= 0; i--) {
-            setChecked(menu.getItem(i), false);
-        }
-    }
-
-    public static void setChecked(@Nullable MenuItem item, boolean isChecked) {
-        if(item == null) return;
-        item.setChecked(isChecked);
-
-        SpannableString spannable = new SpannableString(item.getTitle());
-        spannable.setSpan(new ForegroundColorSpan(isChecked ? Color.BLUE : Color.BLACK),
-                0, spannable.length(), 0);
-        item.setTitle(spannable);
+        AppUtils.clearChecked(typeViewMenu);
+        AppUtils.setChecked(typeViewMenu.findItem(getTypeViewMenuItemId(typeView)), true);
     }
 
     @Override

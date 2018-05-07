@@ -8,14 +8,20 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.graphics.drawable.VectorDrawableCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.view.Menu;
+import android.view.MenuItem;
 
 public class AppUtils {
 
@@ -96,6 +102,24 @@ public class AppUtils {
         if(addToBackStack) fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
+
+    // Options menu
+    public static void clearChecked(@NonNull Menu menu) {
+        for(int i = menu.size() - 1; i >= 0; i--) {
+            setChecked(menu.getItem(i), false);
+        }
+    }
+
+    public static void setChecked(@Nullable MenuItem item, boolean isChecked) {
+        if(item == null) return;
+        item.setChecked(isChecked);
+
+        SpannableString spannable = new SpannableString(item.getTitle());
+        spannable.setSpan(new ForegroundColorSpan(isChecked ? Color.BLUE : Color.BLACK),
+                0, spannable.length(), 0);
+        item.setTitle(spannable);
+    }
+
 
     // Activity
     public static Intent makeMainIntent(Intent intent) {

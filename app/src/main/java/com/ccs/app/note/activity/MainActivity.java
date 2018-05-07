@@ -15,6 +15,7 @@ import com.ccs.app.note.activity.fragment.NoteListFragment;
 import com.ccs.app.note.db.AppDatabase;
 import com.ccs.app.note.db.dao.NoteDao;
 import com.ccs.app.note.db.entity.Note;
+import com.ccs.app.note.model.MainModel;
 import com.ccs.app.note.model.NoteEditModel;
 import com.ccs.app.note.model.NoteListModel;
 import com.ccs.app.note.model.item.NoteItem;
@@ -34,57 +35,23 @@ public class MainActivity extends SwitchListActivity {
 
         init();
 
-        AppUtils.addFragment(getSupportFragmentManager(), R.id.fragment_container, NoteListFragment.class, false);
-
         noteDao = AppDatabase.getInstance(this).getNoteDao();
 
-        getModel(NoteListModel.class).getNoteDao().setValue(noteDao);
-
-        final Handler handler = new Handler();
-
-        final ExecutorService executorService = Executors.newSingleThreadExecutor();
-
-//        executorService.execute(new Runnable() {
-//            @Override
-//            public void run() {
-//                int count = noteDao.getCount();
-//                f(handler, executorService, count);
-//            }
-//        });
+        getModel(MainModel.class).getNoteDao().setValue(noteDao);
 
         findViewById(R.id.btn_plus).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 NoteItem noteItem = new NoteItem();
-                NoteEditModel noteEditModel = getModel(NoteEditModel.class);
-                noteEditModel.getNoteDao().setValue(noteDao);
-                noteEditModel.getNote().setValue(noteItem);
+                noteItem.setDateCreate(System.currentTimeMillis());
+
+                getModel(NoteEditModel.class).getNote().setValue(noteItem);
+
                 AppUtils.addFragment(getSupportFragmentManager(), R.id.fragment_container, NoteEditFragment.class, true);
             }
         });
-    }
 
-    private void f(final Handler handler, final ExecutorService executorService, final int count) {
-        handler.postDelayed(new Runnable() {
-            int i = count;
-
-            @Override
-            public void run() {
-                i++;
-
-                final Note note = new Note();
-                note.setNote("note" + i);
-
-                executorService.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        noteDao.insertAll(note);
-                    }
-                });
-
-                if(i - count < 10) handler.postDelayed(this, 1000);
-            }
-        }, 1000);
+        AppUtils.addFragment(getSupportFragmentManager(), R.id.fragment_container, NoteListFragment.class, false);
     }
 
     @Override
@@ -100,8 +67,6 @@ public class MainActivity extends SwitchListActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-
         return super.onOptionsItemSelected(item);
     }
 }

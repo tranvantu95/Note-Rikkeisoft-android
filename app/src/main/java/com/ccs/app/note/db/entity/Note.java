@@ -17,10 +17,10 @@ public class Note {
     private String note;
 
     @ColumnInfo(name = DATE_CREATE_COLUMN)
-    private String dateCreate;
+    private long dateCreate; // currentTimeMillis
 
     @ColumnInfo(name = DATE_EDIT_COLUMN)
-    private String dateEdit;
+    private long dateEdit; // currentTimeMillis
 
     public long getId() {
         return id;
@@ -38,19 +38,19 @@ public class Note {
         this.note = note;
     }
 
-    public String getDateCreate() {
+    public long getDateCreate() {
         return dateCreate;
     }
 
-    public void setDateCreate(String dateCreate) {
+    public void setDateCreate(long dateCreate) {
         this.dateCreate = dateCreate;
     }
 
-    public String getDateEdit() {
+    public long getDateEdit() {
         return dateEdit;
     }
 
-    public void setDateEdit(String dateEdit) {
+    public void setDateEdit(long dateEdit) {
         this.dateEdit = dateEdit;
     }
 }

@@ -10,12 +10,4 @@ import com.ccs.app.note.model.item.NoteItem;
 
 public class NoteListModel extends SwitchListModel<NoteItem> {
 
-    private MutableLiveData<NoteDao> noteDao;
-
-    @NonNull
-    public MutableLiveData<NoteDao> getNoteDao() {
-        if(noteDao == null) noteDao = new MutableLiveData<>();
-        return noteDao;
-    }
-
 }

@@ -9,14 +9,6 @@ import com.ccs.app.note.model.item.NoteItem;
 
 public class NoteEditModel extends ViewModel {
 
-    private MutableLiveData<NoteDao> noteDao;
-
-    @NonNull
-    public MutableLiveData<NoteDao> getNoteDao() {
-        if(noteDao == null) noteDao = new MutableLiveData<>();
-        return noteDao;
-    }
-
     private MutableLiveData<NoteItem> note;
 
     public MutableLiveData<NoteItem> getNote() {

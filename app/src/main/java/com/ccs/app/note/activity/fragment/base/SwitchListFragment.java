@@ -20,8 +20,8 @@ public abstract class SwitchListFragment<Item,
         LA extends SwitchListAdapter<Item, ?>>
         extends ListFragment<Item, Model, LA> {
 
-    protected LinearLayoutManager linearLayoutManager;
-    protected GridLayoutManager gridLayoutManager;
+    protected RecyclerView.LayoutManager linearLayoutManager;
+    protected RecyclerView.LayoutManager gridLayoutManager;
 
     protected int dividerList, dividerGrid;
 
@@ -50,10 +50,10 @@ public abstract class SwitchListFragment<Item,
 
     // abstract
     @NonNull
-    protected abstract LinearLayoutManager onCreateLinearLayoutManager();
+    protected abstract RecyclerView.LayoutManager onCreateLinearLayoutManager();
 
     @NonNull
-    protected abstract GridLayoutManager onCreateGridLayoutManager();
+    protected abstract RecyclerView.LayoutManager onCreateGridLayoutManager();
 
     @Dimension
     protected abstract int onCreateDividerList();

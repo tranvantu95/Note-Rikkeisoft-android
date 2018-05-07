@@ -7,6 +7,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.EditText;
 
@@ -14,10 +16,11 @@ import com.ccs.app.note.R;
 import com.ccs.app.note.activity.fragment.base.BaseFragment;
 import com.ccs.app.note.config.Debug;
 import com.ccs.app.note.db.dao.NoteDao;
+import com.ccs.app.note.model.MainModel;
 import com.ccs.app.note.model.NoteEditModel;
 import com.ccs.app.note.model.item.NoteItem;
 
-public class NoteEditFragment extends BaseFragment<NoteEditModel> {
+public class NoteEditFragment extends BaseFragment<NoteEditModel> implements View.OnClickListener {
 
     private EditText editText;
     private NoteDao noteDao;
@@ -26,8 +29,9 @@ public class NoteEditFragment extends BaseFragment<NoteEditModel> {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
-        model.getNoteDao().observe(this, new Observer<NoteDao>() {
+        getActivityModel(MainModel.class).getNoteDao().observe(this, new Observer<NoteDao>() {
             @Override
             public void onChanged(@Nullable NoteDao noteDao) {
                 if(noteDao != null) NoteEditFragment.this.noteDao = noteDao;
@@ -35,6 +39,7 @@ public class NoteEditFragment extends BaseFragment<NoteEditModel> {
         });
 
         observeNote();
+
     }
 
     private void observeNote() {
@@ -67,19 +72,36 @@ public class NoteEditFragment extends BaseFragment<NoteEditModel> {
         if(TextUtils.equals(note.getNote(), editText.getText())) return;
 
         note.setNote(editText.getText().toString());
+        note.setDateEdit(System.currentTimeMillis());
 
-        if(note.isAdded()) noteDao.updateAll(note);
-        else {
+        if(!note.isAdded()) {
             note.setAdded(true);
             noteDao.insertAll(note);
+        }
+        else {
+            noteDao.updateAll(note);
         }
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        view.setOnClickListener(this);
 
         editText = view.findViewById(R.id.edit_text);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if(getActivity() != null)
+            getActivity().findViewById(R.id.btn_plus).setVisibility(View.INVISIBLE);
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 
     @Override
@@ -88,10 +110,24 @@ public class NoteEditFragment extends BaseFragment<NoteEditModel> {
         saveNote();
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        if(getActivity() != null)
+            getActivity().findViewById(R.id.btn_plus).setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        menu.clear();
+    }
+
     @LayoutRes
     @Override
     protected int getFragmentLayoutId() {
-        return R.layout.fragment_edit_note;
+        return R.layout.fragment_note_edit;
     }
 
     @NonNull

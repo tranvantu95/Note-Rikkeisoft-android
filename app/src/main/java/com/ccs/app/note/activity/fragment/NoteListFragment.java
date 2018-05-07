@@ -5,31 +5,29 @@ import android.arch.paging.PagedList;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.Dimension;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Toast;
 
 import com.ccs.app.note.R;
 import com.ccs.app.note.activity.base.SwitchListActivity;
 import com.ccs.app.note.activity.fragment.base.SwitchListFragment;
 import com.ccs.app.note.app.MyApplication;
-import com.ccs.app.note.app.base.BaseApplication;
 import com.ccs.app.note.config.Debug;
 import com.ccs.app.note.custom.adapter.NoteListAdapter;
 import com.ccs.app.note.custom.adapter.base.ListAdapter;
-import com.ccs.app.note.custom.adapter.base.SwitchListAdapter;
 import com.ccs.app.note.db.dao.NoteDao;
 import com.ccs.app.note.db.entity.Note;
+import com.ccs.app.note.model.MainModel;
 import com.ccs.app.note.model.NoteEditModel;
 import com.ccs.app.note.model.NoteListModel;
 import com.ccs.app.note.model.item.NoteItem;
@@ -51,12 +49,14 @@ public class NoteListFragment extends SwitchListFragment<NoteItem, NoteListModel
             orderColumn = preferences.getString("orderColumn", orderColumn);
         }
 
-        model.getNoteDao().observe(this, new Observer<NoteDao>() {
+        getActivityModel(MainModel.class).getNoteDao().observe(this, new Observer<NoteDao>() {
             @Override
             public void onChanged(@Nullable NoteDao noteDao) {
                 if(noteDao != null) updateNoteDao(noteDao);
             }
         });
+
+        listAdapter.setOrderColumn(orderColumn);
 
     }
 
@@ -64,7 +64,19 @@ public class NoteListFragment extends SwitchListFragment<NoteItem, NoteListModel
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        listView.setVerticalScrollBarEnabled(true);
+//        listView.setVerticalScrollBarEnabled(false);
+    }
+
+    @Override
+    protected void updateListAdapter(@NonNull PagedList<NoteItem> noteItems) {
+        super.updateListAdapter(noteItems);
+
+//        NoteItem currentNote = getActivityModel(NoteEditModel.class).getNote().getValue();
+//        // PagedList get item can be null
+//        int currentPos = ListUtils.findIndex(noteItems, currentNote);
+//        Log.d(Debug.TAG + getClass().getSimpleName(), "currentPos " + currentPos);
+
+        listView.smoothScrollToPosition(0);
     }
 
     //
@@ -86,6 +98,8 @@ public class NoteListFragment extends SwitchListFragment<NoteItem, NoteListModel
         this.orderColumn = orderColumn;
         saveOrder();
 
+        listAdapter.setOrderColumn(orderColumn);
+
         updateDataSourceFactory(orderColumn);
 
         setChecked(orderColumn);
@@ -93,7 +107,7 @@ public class NoteListFragment extends SwitchListFragment<NoteItem, NoteListModel
 
     private void saveOrder() {
         if(getActivity() == null) return;
-        SharedPreferences.Editor editor = getActivity().getSharedPreferences(BaseApplication.DATA, Context.MODE_PRIVATE).edit();
+        SharedPreferences.Editor editor = getActivity().getSharedPreferences(MyApplication.DATA, Context.MODE_PRIVATE).edit();
         editor.putString("orderColumn", orderColumn);
         editor.apply();
     }
@@ -101,8 +115,8 @@ public class NoteListFragment extends SwitchListFragment<NoteItem, NoteListModel
     private void setChecked(String orderColumn) {
         if(sortTypeMenu == null) return;
         Log.d(Debug.TAG + getClass().getSimpleName(), "setChecked " + orderColumn);
-        SwitchListActivity.clearChecked(sortTypeMenu);
-        SwitchListActivity.setChecked(sortTypeMenu.findItem(getSortTypeMenuItemId(orderColumn)), true);
+        AppUtils.clearChecked(sortTypeMenu);
+        AppUtils.setChecked(sortTypeMenu.findItem(getSortTypeMenuItemId(orderColumn)), true);
     }
 
     @Override
@@ -143,7 +157,7 @@ public class NoteListFragment extends SwitchListFragment<NoteItem, NoteListModel
 
     @Override
     protected int getFragmentLayoutId() {
-        return R.layout.fragment_list;
+        return R.layout.fragment_note_list;
     }
 
     @NonNull
@@ -170,9 +184,9 @@ public class NoteListFragment extends SwitchListFragment<NoteItem, NoteListModel
                 NoteItem item = items.get(position);
                 if(item == null) return;
                 item.setAdded(true);
-                NoteEditModel noteEditModel = getActivityModel(NoteEditModel.class);
-                noteEditModel.getNoteDao().setValue(noteDao);
-                noteEditModel.getNote().setValue(item);
+
+                getActivityModel(NoteEditModel.class).getNote().setValue(item);
+
                 AppUtils.addFragment(getFragmentManager(), R.id.fragment_container, NoteEditFragment.class, true);
             }
         });
@@ -180,14 +194,14 @@ public class NoteListFragment extends SwitchListFragment<NoteItem, NoteListModel
 
     @NonNull
     @Override
-    protected LinearLayoutManager onCreateLinearLayoutManager() {
+    protected RecyclerView.LayoutManager onCreateLinearLayoutManager() {
         return new LinearLayoutManager(getContext());
     }
 
     @NonNull
     @Override
-    protected GridLayoutManager onCreateGridLayoutManager() {
-        return new GridLayoutManager(getContext(), 2);
+    protected RecyclerView.LayoutManager onCreateGridLayoutManager() {
+        return new StaggeredGridLayoutManager(2, RecyclerView.VERTICAL);
     }
 
     @Dimension

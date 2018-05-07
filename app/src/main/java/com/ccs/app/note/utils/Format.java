@@ -1,6 +1,13 @@
 package com.ccs.app.note.utils;
 
+import java.util.Date;
+
 public class Format {
+
+    public static String formatDate(long ms) {
+        Date date = new Date(ms);
+        return date.toString();
+    }
 
     public static String formatTime(int ms) {
         int s = ms / 1000;
