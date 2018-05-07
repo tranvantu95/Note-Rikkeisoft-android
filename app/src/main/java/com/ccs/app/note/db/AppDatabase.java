@@ -13,7 +13,7 @@ import com.ccs.app.note.model.item.NoteItem;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Note.class}, version = AppConfig.APP_DATABASE_VERSION)
+@Database(entities = {Note.class}, version = AppConfig.APP_DATABASE_VERSION, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 
     public static final ExecutorService executor = Executors.newSingleThreadExecutor();

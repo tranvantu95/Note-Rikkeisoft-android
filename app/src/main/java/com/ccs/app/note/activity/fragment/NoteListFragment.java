@@ -1,7 +1,12 @@
 package com.ccs.app.note.activity.fragment;
 
+import android.arch.core.util.Function;
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
+import android.arch.paging.DataSource;
+import android.arch.paging.LivePagedListBuilder;
 import android.arch.paging.PagedList;
+import android.arch.paging.PositionalDataSource;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -33,6 +38,16 @@ import com.ccs.app.note.model.NoteListModel;
 import com.ccs.app.note.model.item.NoteItem;
 import com.ccs.app.note.utils.AppUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
+
 public class NoteListFragment extends SwitchListFragment<NoteItem, NoteListModel, NoteListAdapter> {
 
     private String orderColumn = Note.DATE_EDIT_COLUMN;
@@ -60,6 +75,80 @@ public class NoteListFragment extends SwitchListFragment<NoteItem, NoteListModel
 
     }
 
+    // test rxJava
+    private void loadAllNote() {
+        Observable<List<NoteItem>> observable = Observable.create(new ObservableOnSubscribe<List<NoteItem>>() {
+            @Override
+            public void subscribe(ObservableEmitter<List<NoteItem>> emitter) {
+                try {
+                    List<NoteItem> items;
+                    if (Note.DATE_CREATE_COLUMN.equals(orderColumn))
+                        items = noteDao._getAllByDateCreate();
+                    else items = noteDao._getAllByDateEdit();
+
+                    emitter.onNext(items);
+                    emitter.onComplete();
+                }
+                catch (Exception ex) {
+                    emitter.onError(ex);
+                }
+            }
+        });
+
+        observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new io.reactivex.Observer<List<NoteItem>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {}
+
+                    @Override
+                    public void onNext(List<NoteItem> items) {
+                        updateItems(items);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {}
+
+                    @Override
+                    public void onComplete() {}
+                });
+    }
+
+    private void updateItems(final List<NoteItem> items) {
+        setDataSourceFactory(new DataSource.Factory<Integer, NoteItem>() {
+            @Override
+            public DataSource<Integer, NoteItem> create() {
+                return new PositionalDataSource<NoteItem>() {
+                    private int computeCount() {
+                        // actual count code here
+                        return items.size();
+                    }
+
+                    private List<NoteItem> loadRangeInternal(int startPosition, int loadCount) {
+                        // actual load code here
+                        return items.subList(startPosition, startPosition + loadCount);
+                    }
+
+                    @Override
+                    public void loadInitial(@NonNull LoadInitialParams params,
+                                            @NonNull LoadInitialCallback<NoteItem> callback) {
+                        int totalCount = computeCount();
+                        int position = computeInitialLoadPosition(params, totalCount);
+                        int loadSize = computeInitialLoadSize(params, position, totalCount);
+                        callback.onResult(loadRangeInternal(position, loadSize), position, totalCount);
+                    }
+
+                    @Override
+                    public void loadRange(@NonNull LoadRangeParams params,
+                                          @NonNull LoadRangeCallback<NoteItem> callback) {
+                        callback.onResult(loadRangeInternal(params.startPosition, params.loadSize));
+                    }
+                };
+            }
+        });
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -83,7 +172,8 @@ public class NoteListFragment extends SwitchListFragment<NoteItem, NoteListModel
     private void updateNoteDao(@NonNull NoteDao noteDao) {
         Log.d(Debug.TAG + getClass().getSimpleName(), "updateNoteDao");
         this.noteDao = noteDao;
-        updateDataSourceFactory(orderColumn);
+//        updateDataSourceFactory(orderColumn);
+        loadAllNote(); // test rxJava
     }
 
     private void updateDataSourceFactory(String orderColumn) {

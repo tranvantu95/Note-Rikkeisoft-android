@@ -43,7 +43,15 @@ public abstract class NoteDao {
     public abstract List<NoteItem> _getAll();
 
     @WorkerThread
-    @Query("SELECT COUNT(*) FROM note")
+    @Query("SELECT * FROM note ORDER BY date_create DESC")
+    public abstract List<NoteItem> _getAllByDateCreate();
+
+    @WorkerThread
+    @Query("SELECT * FROM note")
+    public abstract List<NoteItem> _getAllByDateEdit();
+
+    @WorkerThread
+    @Query("SELECT COUNT(*) FROM note ORDER BY date_edit DESC")
     public abstract int _getCount();
 
     @WorkerThread

@@ -2,10 +2,8 @@ package com.ccs.app.note.activity.fragment.base;
 
 import android.app.Activity;
 import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -18,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.ccs.app.note.config.Debug;
-import com.ccs.app.note.utils.ViewModelUtils;
+import com.ccs.app.note.utils.ModelUtils;
 
 public abstract class BaseFragment<Model extends ViewModel> extends Fragment {
 
@@ -142,19 +140,19 @@ public abstract class BaseFragment<Model extends ViewModel> extends Fragment {
 
     // Model
     protected <Model extends ViewModel> Model getAppModel(Class<Model> clazz) {
-        return ViewModelUtils.ofApp(getActivity().getApplication()).get(clazz);
+        return ModelUtils.ofApp(getActivity().getApplication()).get(clazz);
     }
 
     protected <Model extends ViewModel> Model getActivityModel(Class<Model> clazz) {
-        return ViewModelProviders.of(getActivity()).get(clazz);
+        return ModelUtils.of(getActivity()).get(clazz);
     }
 
     protected <Model extends ViewModel> Model getParentFragmentModel(Class<Model> clazz) {
-        return ViewModelProviders.of(getParentFragment()).get(clazz);
+        return ModelUtils.of(getParentFragment()).get(clazz);
     }
 
     protected <Model extends ViewModel> Model getFragmentModel(Class<Model> clazz) {
-        return ViewModelProviders.of(this).get(clazz);
+        return ModelUtils.of(this).get(clazz);
     }
 
     protected <Model extends ViewModel> Model getModel(int owner, Class<Model> clazz) {

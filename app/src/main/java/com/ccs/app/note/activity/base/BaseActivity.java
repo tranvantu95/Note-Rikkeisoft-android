@@ -1,18 +1,15 @@
 package com.ccs.app.note.activity.base;
 
 import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProviders;
 
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 
 import com.ccs.app.note.config.Debug;
-import com.ccs.app.note.utils.ViewModelUtils;
+import com.ccs.app.note.utils.ModelUtils;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -66,11 +63,11 @@ public class BaseActivity extends AppCompatActivity {
 
     // Model
     protected <Model extends ViewModel> Model getModel(Class<Model> clazz) {
-        return ViewModelProviders.of(this).get(clazz);
+        return ModelUtils.of(this).get(clazz);
     }
 
     protected <Model extends ViewModel> Model getAppModel(Class<Model> clazz) {
-        return ViewModelUtils.ofApp(getApplication()).get(clazz);
+        return ModelUtils.ofApp(getApplication()).get(clazz);
     }
 
 }

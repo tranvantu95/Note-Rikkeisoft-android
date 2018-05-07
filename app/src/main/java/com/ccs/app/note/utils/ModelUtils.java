@@ -2,12 +2,13 @@ package com.ccs.app.note.utils;
 
 import android.app.Application;
 import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.arch.lifecycle.ViewModelStore;
 import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-public class ViewModelUtils {
+public class ModelUtils extends ViewModelProviders {
 
     private static ViewModelStore appViewModelStore;
 

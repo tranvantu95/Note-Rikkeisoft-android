@@ -6,6 +6,9 @@ import android.support.annotation.NonNull;
 
 import com.ccs.app.note.db.dao.NoteDao;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+
 public class MainModel extends ViewModel {
 
     private MutableLiveData<NoteDao> noteDao;
