@@ -172,8 +172,8 @@ public class NoteListFragment extends SwitchListFragment<NoteItem, NoteListModel
     private void updateNoteDao(@NonNull NoteDao noteDao) {
         Log.d(Debug.TAG + getClass().getSimpleName(), "updateNoteDao");
         this.noteDao = noteDao;
-//        updateDataSourceFactory(orderColumn);
-        loadAllNote(); // test rxJava
+        updateDataSourceFactory(orderColumn);
+//        loadAllNote(); // test rxJava
     }
 
     private void updateDataSourceFactory(String orderColumn) {
