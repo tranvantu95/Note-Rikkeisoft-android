@@ -114,6 +114,18 @@ public abstract class BaseFragment<Model extends ViewModel> extends Fragment {
     }
 
     @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        Log.d(Debug.TAG + getClass().getSimpleName(), "onSaveInstanceState");
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        Log.d(Debug.TAG + getClass().getSimpleName(), "onViewStateRestored");
+    }
+
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         Log.d(Debug.TAG + getClass().getSimpleName(), "onCreateOptionsMenu");

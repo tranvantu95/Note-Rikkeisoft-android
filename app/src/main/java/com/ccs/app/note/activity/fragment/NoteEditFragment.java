@@ -29,6 +29,9 @@ public class NoteEditFragment extends BaseFragment<NoteEditModel> implements Vie
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setRetainInstance(true); // saved Instance State when app destroy by system --> leak memory
+
         setHasOptionsMenu(true);
 
         getActivityModel(MainModel.class).getNoteDao().observe(this, new Observer<NoteDao>() {
