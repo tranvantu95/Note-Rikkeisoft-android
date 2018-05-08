@@ -26,7 +26,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 
 @Dao
-public abstract class NoteDao {
+public abstract class NoteDao implements BaseDao<Note> {
 
     private static final ExecutorService executor = AppDatabase.executor;
 
@@ -51,7 +51,7 @@ public abstract class NoteDao {
     public abstract List<NoteItem> _getAllByDateEdit();
 
     @WorkerThread
-    @Query("SELECT COUNT(*) FROM note ORDER BY date_edit DESC")
+    @Query("SELECT COUNT(*) FROM note")
     public abstract int _getCount();
 
     @WorkerThread

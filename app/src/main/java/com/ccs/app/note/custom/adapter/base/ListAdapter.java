@@ -10,10 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ccs.app.note.model.item.base.BaseItem;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.ccs.app.note.model.item.BaseItem;
 
 public abstract class ListAdapter<Item, VH extends ListAdapter.ViewHolder<Item, ?>>
         extends PagedListAdapter<Item, VH> {
