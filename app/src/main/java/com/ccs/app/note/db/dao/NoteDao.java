@@ -28,6 +28,8 @@ import java.util.stream.Collectors;
 @Dao
 public abstract class NoteDao implements BaseDao<Note> {
 
+    protected final String TAG = getClass().getSimpleName();
+
     private static final ExecutorService executor = AppDatabase.executor;
 
     @MainThread
@@ -101,7 +103,7 @@ public abstract class NoteDao implements BaseDao<Note> {
     //
     @MainThread
     public LiveData<List<Long>> insertAll(final Note... notes) {
-        Log.d(Debug.TAG + getClass().getSimpleName(), "insertAll");
+        Log.d(Debug.TAG + TAG, "insertAll");
         final MutableLiveData<List<Long>> ids = new MutableLiveData<>();
         executor.execute(new Runnable() {
             @Override
@@ -120,7 +122,7 @@ public abstract class NoteDao implements BaseDao<Note> {
 
     @MainThread
     public void updateAll(final Note... notes) {
-        Log.d(Debug.TAG + getClass().getSimpleName(), "updateAll");
+        Log.d(Debug.TAG + TAG, "updateAll");
         executor.execute(new Runnable() {
             @Override
             public void run() {
@@ -131,7 +133,7 @@ public abstract class NoteDao implements BaseDao<Note> {
 
     @MainThread
     public void deleteAll(final Note... notes) {
-        Log.d(Debug.TAG + getClass().getSimpleName(), "deleteAll");
+        Log.d(Debug.TAG + TAG, "deleteAll");
         executor.execute(new Runnable() {
             @Override
             public void run() {

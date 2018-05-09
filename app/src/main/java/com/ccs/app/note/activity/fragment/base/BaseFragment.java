@@ -20,6 +20,8 @@ import com.ccs.app.note.utils.ModelUtils;
 
 public abstract class BaseFragment<Model extends ViewModel> extends Fragment {
 
+    protected final String TAG = getClass().getSimpleName();
+
     // Model Owner
     public static final String MODEL_OWNER = "model_owner";
 
@@ -34,19 +36,19 @@ public abstract class BaseFragment<Model extends ViewModel> extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        Log.d(Debug.TAG + getClass().getSimpleName(), "onAttach Context");
+        Log.d(Debug.TAG + TAG, "onAttach Context");
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        Log.d(Debug.TAG + getClass().getSimpleName(), "onAttach Activity");
+        Log.d(Debug.TAG + TAG, "onAttach Activity");
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.d(Debug.TAG + getClass().getSimpleName(), "onCreate");
+        Log.d(Debug.TAG + TAG, "onCreate");
 
         modelOwner = getModelOwner();
         model = onCreateModel();
@@ -55,86 +57,86 @@ public abstract class BaseFragment<Model extends ViewModel> extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        Log.d(Debug.TAG + getClass().getSimpleName(), "onCreateView");
+        Log.d(Debug.TAG + TAG, "onCreateView");
         return inflater.inflate(getFragmentLayoutId(), container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d(Debug.TAG + getClass().getSimpleName(), "onViewCreated");
+        Log.d(Debug.TAG + TAG, "onViewCreated");
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        Log.d(Debug.TAG + getClass().getSimpleName(), "onActivityCreated");
+        Log.d(Debug.TAG + TAG, "onActivityCreated");
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(Debug.TAG + getClass().getSimpleName(), "onStart");
+        Log.d(Debug.TAG + TAG, "onStart");
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(Debug.TAG + getClass().getSimpleName(), "onResume");
+        Log.d(Debug.TAG + TAG, "onResume");
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Log.d(Debug.TAG + getClass().getSimpleName(), "onPause");
+        Log.d(Debug.TAG + TAG, "onPause");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.d(Debug.TAG + getClass().getSimpleName(), "onStop");
+        Log.d(Debug.TAG + TAG, "onStop");
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        Log.d(Debug.TAG + getClass().getSimpleName(), "onDestroyView");
+        Log.d(Debug.TAG + TAG, "onDestroyView");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        Log.d(Debug.TAG + getClass().getSimpleName(), "onDestroy");
+        Log.d(Debug.TAG + TAG, "onDestroy");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        Log.d(Debug.TAG + getClass().getSimpleName(), "onDetach");
+        Log.d(Debug.TAG + TAG, "onDetach");
     }
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
-        Log.d(Debug.TAG + getClass().getSimpleName(), "onSaveInstanceState");
+        Log.d(Debug.TAG + TAG, "onSaveInstanceState");
     }
 
     @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
-        Log.d(Debug.TAG + getClass().getSimpleName(), "onViewStateRestored");
+        Log.d(Debug.TAG + TAG, "onViewStateRestored");
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        Log.d(Debug.TAG + getClass().getSimpleName(), "onCreateOptionsMenu");
+        Log.d(Debug.TAG + TAG, "onCreateOptionsMenu");
     }
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        Log.d(Debug.TAG + getClass().getSimpleName(), "onPrepareOptionsMenu");
+        Log.d(Debug.TAG + TAG, "onPrepareOptionsMenu");
     }
 
     // abstract

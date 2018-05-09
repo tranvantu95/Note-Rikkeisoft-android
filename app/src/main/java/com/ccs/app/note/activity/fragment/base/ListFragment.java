@@ -90,13 +90,13 @@ public abstract class ListFragment<Item,
 
     // update
     protected void updateListAdapter(@NonNull PagedList<Item> items) {
-        Log.d(Debug.TAG + getClass().getSimpleName(), "updateListAdapter");
+        Log.d(Debug.TAG + TAG, "updateListAdapter");
         listAdapter.submitList(items);
 //        listAdapter.notifyDataSetChanged();
     }
 
     protected void updateListView() {
-        Log.d(Debug.TAG + getClass().getSimpleName(), "updateListView");
+        Log.d(Debug.TAG + TAG, "updateListView");
         listView.setPadding(divider, divider, divider, divider);
         listView.setLayoutManager(layoutManager);
         listView.setAdapter(listAdapter);

@@ -74,7 +74,7 @@ public abstract class SwitchListFragment<Item,
     // set
     protected void setTypeView(int typeView) {
         if(listAdapter.getTypeView() == typeView) return;
-        Log.d(Debug.TAG + getClass().getSimpleName(), "setTypeView " + SwitchListAdapter.getTypeView(typeView));
+        Log.d(Debug.TAG + TAG, "setTypeView " + SwitchListAdapter.getTypeView(typeView));
 
         listAdapter.setTypeView(typeView);
         layoutManager = switchLayoutManager(typeView);

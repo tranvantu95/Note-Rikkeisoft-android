@@ -55,7 +55,7 @@ public class NoteEditFragment extends BaseFragment<NoteEditModel> implements Vie
     }
 
     private void updateNote(@NonNull NoteItem noteItem) {
-        Log.d(Debug.TAG + getClass().getSimpleName(), "updateNote");
+        Log.d(Debug.TAG + TAG, "updateNote");
         note = noteItem;
 
         editText.setText(noteItem.getNote());

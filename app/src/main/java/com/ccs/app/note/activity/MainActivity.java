@@ -48,7 +48,7 @@ public class MainActivity extends SwitchListActivity {
 
         //
         ((MyApplication) getApplication()).getMyComponent().inject(this);
-        Log.d(Debug.TAG + getClass().getSimpleName(), "" + myModel.toString());
+        Log.d(Debug.TAG + TAG, "" + myModel.toString());
 
         init();
 

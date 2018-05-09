@@ -39,7 +39,7 @@ public abstract class SwitchListActivity extends AppbarActivity {
             saveTypeView();
         }
 
-        Log.d(Debug.TAG + getClass().getSimpleName(), "onChangeTypeView " + SwitchListAdapter.getTypeView(typeView));
+        Log.d(Debug.TAG + TAG, "onChangeTypeView " + SwitchListAdapter.getTypeView(typeView));
         onChangeTypeView(typeView);
 
         setChecked(typeView);
@@ -55,7 +55,7 @@ public abstract class SwitchListActivity extends AppbarActivity {
 
     private void setChecked(int typeView) {
         if(typeViewMenu == null) return;
-        Log.d(Debug.TAG + getClass().getSimpleName(), "setChecked " + SwitchListAdapter.getTypeView(typeView));
+        Log.d(Debug.TAG + TAG, "setChecked " + SwitchListAdapter.getTypeView(typeView));
         AppUtils.clearChecked(typeViewMenu);
         AppUtils.setChecked(typeViewMenu.findItem(getTypeViewMenuItemId(typeView)), true);
     }

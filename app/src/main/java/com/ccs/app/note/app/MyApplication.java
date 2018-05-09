@@ -15,6 +15,8 @@ import com.ccs.app.note.utils.General;
 
 public class MyApplication extends Application {
 
+    protected final String TAG = getClass().getSimpleName();
+
     public static final String DATA = AppConfig.APP_DATA;
 
     private MyComponent myComponent;
@@ -22,7 +24,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.d(Debug.TAG + getClass().getSimpleName(), "onCreate");
+        Log.d(Debug.TAG + TAG, "onCreate");
 
         // set support vector drawable for api < 21
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);

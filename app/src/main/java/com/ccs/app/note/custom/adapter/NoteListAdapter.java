@@ -64,7 +64,7 @@ public class NoteListAdapter extends SwitchListAdapter<NoteItem, NoteListAdapter
 
         @Override
         protected void updateItem(@NonNull NoteItem noteItem, int position) {
-//            Log.d(Debug.TAG + getClass().getSimpleName(), "noteId " + noteItem.getId());
+//            Log.d(Debug.TAG + TAG, "noteId " + noteItem.getId());
             date.setText(switchDate(noteItem, adapter.getOrderColumn()));
             note.setText(noteItem.getNote());
             highlightFirstLine();
@@ -82,8 +82,8 @@ public class NoteListAdapter extends SwitchListAdapter<NoteItem, NoteListAdapter
                 public void run() {
                     int start = 0; // note.getLayout().getLineStart(0);
                     int end = note.getLayout().getLineEnd(0);
-//                    Log.d(Debug.TAG + getClass().getSimpleName(), "getLineStart " + start);
-//                    Log.d(Debug.TAG + getClass().getSimpleName(), "getLineEnd " + end);
+//                    Log.d(Debug.TAG + TAG, "getLineStart " + start);
+//                    Log.d(Debug.TAG + TAG, "getLineEnd " + end);
 
                     SpannableString spannableString = new SpannableString(note.getText());
                     spannableString.setSpan(new StyleSpan(android.graphics.Typeface.BOLD),

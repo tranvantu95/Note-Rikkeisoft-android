@@ -163,14 +163,14 @@ public class NoteListFragment extends SwitchListFragment<NoteItem, NoteListModel
 //        NoteItem currentNote = getActivityModel(NoteEditModel.class).getNote().getValue();
 //        // PagedList get item can be null
 //        int currentPos = ListUtils.findIndex(noteItems, currentNote);
-//        Log.d(Debug.TAG + getClass().getSimpleName(), "currentPos " + currentPos);
+//        Log.d(Debug.TAG + TAG, "currentPos " + currentPos);
 
         listView.smoothScrollToPosition(0);
     }
 
     //
     private void updateNoteDao(@NonNull NoteDao noteDao) {
-        Log.d(Debug.TAG + getClass().getSimpleName(), "updateNoteDao");
+        Log.d(Debug.TAG + TAG, "updateNoteDao");
         this.noteDao = noteDao;
         updateDataSourceFactory(orderColumn);
 //        loadAllNote(); // test rxJava
@@ -178,7 +178,7 @@ public class NoteListFragment extends SwitchListFragment<NoteItem, NoteListModel
 
     private void updateDataSourceFactory(String orderColumn) {
         if(noteDao == null) return;
-        Log.d(Debug.TAG + getClass().getSimpleName(), "updateDataSourceFactory " + orderColumn);
+        Log.d(Debug.TAG + TAG, "updateDataSourceFactory " + orderColumn);
         setDataSourceFactory(noteDao.getAllWithDataSource(orderColumn));
     }
 
@@ -204,7 +204,7 @@ public class NoteListFragment extends SwitchListFragment<NoteItem, NoteListModel
 
     private void setChecked(String orderColumn) {
         if(sortTypeMenu == null) return;
-        Log.d(Debug.TAG + getClass().getSimpleName(), "setChecked " + orderColumn);
+        Log.d(Debug.TAG + TAG, "setChecked " + orderColumn);
         AppUtils.clearChecked(sortTypeMenu);
         AppUtils.setChecked(sortTypeMenu.findItem(getSortTypeMenuItemId(orderColumn)), true);
     }
