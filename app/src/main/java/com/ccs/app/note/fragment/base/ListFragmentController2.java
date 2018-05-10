@@ -1,4 +1,4 @@
-package com.ccs.app.note.activity.fragment.base;
+package com.ccs.app.note.fragment.base;
 
 import android.arch.lifecycle.Observer;
 import android.arch.paging.DataSource;
@@ -12,17 +12,14 @@ import android.util.Log;
 import android.view.View;
 
 import com.ccs.app.note.R;
-import com.ccs.app.note.activity.fragment.base.BaseFragment;
 import com.ccs.app.note.config.Debug;
-import com.ccs.app.note.custom.adapter.base.ListAdapter;
+import com.ccs.app.note.adapter.base.ListAdapter2;
 import com.ccs.app.note.model.base.ListModel;
 
-import java.util.List;
-
-public abstract class ListFragment<Item,
+public abstract class ListFragmentController2<Item,
         Model extends ListModel<Item>,
-        LA extends ListAdapter<Item, ?>>
-        extends BaseFragment<Model> {
+        LA extends ListAdapter2<Item, ?>>
+        extends FragmentController<Model> {
 
     protected RecyclerView listView;
 
@@ -31,6 +28,10 @@ public abstract class ListFragment<Item,
     protected LA listAdapter;
 
     protected int divider;
+
+    public ListFragmentController2(BaseFragment view) {
+        super(view);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -75,7 +76,7 @@ public abstract class ListFragment<Item,
 
     // observe
     protected void observeItems() {
-        model.getItems(getPagedListConfig()).observe(this, new Observer<PagedList<Item>>() {
+        observe(model.getPagedList(getPagedListConfig()), new Observer<PagedList<Item>>() {
             @Override
             public void onChanged(@Nullable PagedList<Item> items) {
                 if (items != null) updateListAdapter(items);
@@ -92,7 +93,6 @@ public abstract class ListFragment<Item,
     protected void updateListAdapter(@NonNull PagedList<Item> items) {
         Log.d(Debug.TAG + TAG, "updateListAdapter");
         listAdapter.submitList(items);
-//        listAdapter.notifyDataSetChanged();
     }
 
     protected void updateListView() {

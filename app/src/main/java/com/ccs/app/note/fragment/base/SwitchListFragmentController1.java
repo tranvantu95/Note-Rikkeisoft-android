@@ -1,29 +1,31 @@
-package com.ccs.app.note.activity.fragment.base;
+package com.ccs.app.note.fragment.base;
 
 import android.arch.lifecycle.Observer;
 import android.os.Bundle;
 import android.support.annotation.Dimension;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import com.ccs.app.note.activity.fragment.base.ListFragment;
+import com.ccs.app.note.adapter.base.SwitchListAdapter2;
+import com.ccs.app.note.adapter.base.SwitchListAdapter1;
 import com.ccs.app.note.config.Debug;
-import com.ccs.app.note.custom.adapter.base.SwitchListAdapter;
 import com.ccs.app.note.model.base.SwitchListModel;
 
-public abstract class SwitchListFragment<Item,
+public abstract class SwitchListFragmentController1<Item,
         Model extends SwitchListModel<Item>,
-        LA extends SwitchListAdapter<Item, ?>>
-        extends ListFragment<Item, Model, LA> {
+        LA extends SwitchListAdapter1<Item, ?>>
+        extends ListFragmentController1<Item, Model, LA> {
 
     protected RecyclerView.LayoutManager linearLayoutManager;
     protected RecyclerView.LayoutManager gridLayoutManager;
 
     protected int dividerList, dividerGrid;
+
+    public SwitchListFragmentController1(BaseFragment view) {
+        super(view);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,7 +65,7 @@ public abstract class SwitchListFragment<Item,
 
     // observe
     protected void observeTypeView() {
-        model.getTypeView().observe(this, new Observer<Integer>() {
+        observe(model.getTypeView(), new Observer<Integer>() {
             @Override
             public void onChanged(@Nullable Integer integer) {
                 if(integer != null) setTypeView(integer);
@@ -74,7 +76,7 @@ public abstract class SwitchListFragment<Item,
     // set
     protected void setTypeView(int typeView) {
         if(listAdapter.getTypeView() == typeView) return;
-        Log.d(Debug.TAG + TAG, "setTypeView " + SwitchListAdapter.getTypeView(typeView));
+        Log.d(Debug.TAG + TAG, "setTypeView " + SwitchListAdapter2.getTypeView(typeView));
 
         listAdapter.setTypeView(typeView);
         layoutManager = switchLayoutManager(typeView);
@@ -86,10 +88,10 @@ public abstract class SwitchListFragment<Item,
     //
     private RecyclerView.LayoutManager switchLayoutManager(int typeView) {
         switch (typeView) {
-            case SwitchListAdapter.LIST_VIEW:
+            case SwitchListAdapter2.LIST_VIEW:
                 return linearLayoutManager;
 
-            case SwitchListAdapter.GRID_VIEW:
+            case SwitchListAdapter2.GRID_VIEW:
                 return gridLayoutManager;
 
             default:
@@ -99,10 +101,10 @@ public abstract class SwitchListFragment<Item,
 
     private int switchDivider(int typeView) {
         switch (typeView) {
-            case SwitchListAdapter.LIST_VIEW:
+            case SwitchListAdapter2.LIST_VIEW:
                 return dividerList;
 
-            case SwitchListAdapter.GRID_VIEW:
+            case SwitchListAdapter2.GRID_VIEW:
                 return dividerGrid;
 
             default:

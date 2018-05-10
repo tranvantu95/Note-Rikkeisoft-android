@@ -1,10 +1,7 @@
-package com.ccs.app.note.activity.fragment;
+package com.ccs.app.note.fragment;
 
-import android.arch.core.util.Function;
-import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Observer;
 import android.arch.paging.DataSource;
-import android.arch.paging.LivePagedListBuilder;
 import android.arch.paging.PagedList;
 import android.arch.paging.PositionalDataSource;
 import android.content.Context;
@@ -13,7 +10,6 @@ import android.os.Bundle;
 import android.support.annotation.Dimension;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -24,21 +20,21 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.ccs.app.note.R;
-import com.ccs.app.note.activity.base.SwitchListActivity;
-import com.ccs.app.note.activity.fragment.base.SwitchListFragment;
+import com.ccs.app.note.adapter.NoteListAdapter;
 import com.ccs.app.note.app.MyApplication;
 import com.ccs.app.note.config.Debug;
-import com.ccs.app.note.custom.adapter.NoteListAdapter;
-import com.ccs.app.note.custom.adapter.base.ListAdapter;
+import com.ccs.app.note.adapter.base.ListAdapter2;
 import com.ccs.app.note.db.dao.NoteDao;
 import com.ccs.app.note.db.entity.Note;
+import com.ccs.app.note.fragment.NoteEditFragment;
+import com.ccs.app.note.fragment.base.BaseFragment;
+import com.ccs.app.note.fragment.base.SwitchListFragmentController2;
 import com.ccs.app.note.model.MainModel;
 import com.ccs.app.note.model.NoteEditModel;
 import com.ccs.app.note.model.NoteListModel;
 import com.ccs.app.note.model.item.NoteItem;
 import com.ccs.app.note.utils.AppUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -48,11 +44,15 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class NoteListFragment extends SwitchListFragment<NoteItem, NoteListModel, NoteListAdapter> {
+public class NoteListFragmentController extends SwitchListFragmentController2<NoteItem, NoteListModel, NoteListAdapter> {
 
     private String orderColumn = Note.DATE_EDIT_COLUMN;
     private Menu sortTypeMenu;
     private NoteDao noteDao;
+
+    public NoteListFragmentController(BaseFragment view) {
+        super(view);
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,7 +64,7 @@ public class NoteListFragment extends SwitchListFragment<NoteItem, NoteListModel
             orderColumn = preferences.getString("orderColumn", orderColumn);
         }
 
-        getActivityModel(MainModel.class).getNoteDao().observe(this, new Observer<NoteDao>() {
+        observe(getActivityModel(MainModel.class).getNoteDao(), new Observer<NoteDao>() {
             @Override
             public void onChanged(@Nullable NoteDao noteDao) {
                 if(noteDao != null) updateNoteDao(noteDao);
@@ -72,7 +72,6 @@ public class NoteListFragment extends SwitchListFragment<NoteItem, NoteListModel
         });
 
         listAdapter.setOrderColumn(orderColumn);
-
     }
 
     // test rxJava
@@ -211,8 +210,8 @@ public class NoteListFragment extends SwitchListFragment<NoteItem, NoteListModel
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.menu_note_list, menu);
         super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_note_list, menu);
     }
 
     @Override
@@ -245,14 +244,9 @@ public class NoteListFragment extends SwitchListFragment<NoteItem, NoteListModel
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    protected int getFragmentLayoutId() {
-        return R.layout.fragment_note_list;
-    }
-
     @NonNull
     @Override
-    protected NoteListModel onCreateModel() {
+    protected NoteListModel onCreateModel(int modelOwner) {
         return getModel(modelOwner, NoteListModel.class);
     }
 
@@ -265,7 +259,7 @@ public class NoteListFragment extends SwitchListFragment<NoteItem, NoteListModel
     @NonNull
     @Override
     protected NoteListAdapter onCreateListAdapter() {
-        return new NoteListAdapter(new ListAdapter.OnItemClickListener() {
+        return new NoteListAdapter(new ListAdapter2.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView.ViewHolder viewHolder, View itemView, int position) {
 //                Toast.makeText(getContext(), "" + position, Toast.LENGTH_SHORT).show();
@@ -297,13 +291,13 @@ public class NoteListFragment extends SwitchListFragment<NoteItem, NoteListModel
     @Dimension
     @Override
     protected int onCreateDividerList() {
-        return 0;
+        return getResources().getDimensionPixelOffset(R.dimen.divider_list);
     }
 
     @Dimension
     @Override
     protected int onCreateDividerGrid() {
-        return 0;
+        return getResources().getDimensionPixelOffset(R.dimen.divider_grid);
     }
 
     //

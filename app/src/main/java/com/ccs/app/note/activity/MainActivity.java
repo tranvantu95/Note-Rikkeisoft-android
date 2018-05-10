@@ -1,32 +1,25 @@
 package com.ccs.app.note.activity;
 
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.ccs.app.note.R;
 import com.ccs.app.note.activity.base.SwitchListActivity;
-import com.ccs.app.note.activity.fragment.NoteEditFragment;
-import com.ccs.app.note.activity.fragment.NoteListFragment;
+import com.ccs.app.note.fragment.NoteEditFragment;
+import com.ccs.app.note.fragment.NoteListFragment;
 import com.ccs.app.note.app.MyApplication;
 import com.ccs.app.note.config.Debug;
 import com.ccs.app.note.db.AppDatabase;
 import com.ccs.app.note.db.dao.NoteDao;
-import com.ccs.app.note.db.entity.Note;
 import com.ccs.app.note.model.MainModel;
 import com.ccs.app.note.model.NoteEditModel;
 import com.ccs.app.note.model.NoteListModel;
 import com.ccs.app.note.model.item.NoteItem;
 import com.ccs.app.note.module.MyModel;
 import com.ccs.app.note.utils.AppUtils;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 

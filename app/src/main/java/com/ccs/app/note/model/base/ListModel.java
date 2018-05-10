@@ -10,11 +10,15 @@ import android.arch.paging.LivePagedListBuilder;
 import android.arch.paging.PagedList;
 import android.support.annotation.NonNull;
 
+import java.util.List;
+
 public class ListModel<Item> extends ViewModel {
 
     protected MutableLiveData<DataSource.Factory<?, Item>> dataSourceFactory;
 
-    protected LiveData<PagedList<Item>> items;
+    protected LiveData<PagedList<Item>> pagedList;
+
+    protected MutableLiveData<List<Item>> items;
 
     @NonNull
     public MutableLiveData<DataSource.Factory<?, Item>> getDataSourceFactory() {
@@ -23,9 +27,9 @@ public class ListModel<Item> extends ViewModel {
     }
 
     @NonNull
-    public LiveData<PagedList<Item>> getItems(@NonNull final PagedList.Config config) {
-        if(items == null)
-            items = Transformations.switchMap(getDataSourceFactory(),
+    public LiveData<PagedList<Item>> getPagedList(@NonNull final PagedList.Config config) {
+        if(pagedList == null)
+            pagedList = Transformations.switchMap(getDataSourceFactory(),
                 new Function<DataSource.Factory<?, Item>, LiveData<PagedList<Item>>>() {
                     @Override
                     public LiveData<PagedList<Item>> apply(DataSource.Factory<?, Item> input) {
@@ -34,6 +38,12 @@ public class ListModel<Item> extends ViewModel {
                     }
                 });
 
+        return pagedList;
+    }
+
+    @NonNull
+    public LiveData<List<Item>> getItems() {
+        if(items == null) items = new MutableLiveData<>();
         return items;
     }
 

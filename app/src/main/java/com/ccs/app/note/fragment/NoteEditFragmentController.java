@@ -1,8 +1,7 @@
-package com.ccs.app.note.activity.fragment;
+package com.ccs.app.note.fragment;
 
 import android.arch.lifecycle.Observer;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
@@ -13,31 +12,36 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.ccs.app.note.R;
-import com.ccs.app.note.activity.fragment.base.BaseFragment;
 import com.ccs.app.note.config.Debug;
 import com.ccs.app.note.db.dao.NoteDao;
+import com.ccs.app.note.fragment.base.BaseFragment;
+import com.ccs.app.note.fragment.base.FragmentController;
 import com.ccs.app.note.model.MainModel;
 import com.ccs.app.note.model.NoteEditModel;
 import com.ccs.app.note.model.item.NoteItem;
 
-public class NoteEditFragment extends BaseFragment<NoteEditModel> implements View.OnClickListener {
+public class NoteEditFragmentController extends FragmentController<NoteEditModel> implements View.OnClickListener {
 
     private EditText editText;
     private NoteDao noteDao;
     private NoteItem note;
 
+    public NoteEditFragmentController(BaseFragment view) {
+        super(view);
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setRetainInstance(true); // saved Instance State when app destroy by system --> leak memory
+        getFragment().setRetainInstance(true); // saved Instance State when app destroy by system --> leak memory
 
         setHasOptionsMenu(true);
 
-        getActivityModel(MainModel.class).getNoteDao().observe(this, new Observer<NoteDao>() {
+        observe(getActivityModel(MainModel.class).getNoteDao(), new Observer<NoteDao>() {
             @Override
             public void onChanged(@Nullable NoteDao noteDao) {
-                if(noteDao != null) NoteEditFragment.this.noteDao = noteDao;
+                if(noteDao != null) NoteEditFragmentController.this.noteDao = noteDao;
             }
         });
 
@@ -46,7 +50,7 @@ public class NoteEditFragment extends BaseFragment<NoteEditModel> implements Vie
     }
 
     private void observeNote() {
-        model.getNote().observe(this, new Observer<NoteItem>() {
+        observe(model.getNote(), new Observer<NoteItem>() {
             @Override
             public void onChanged(@Nullable NoteItem noteItem) {
                 if(noteItem != null) updateNote(noteItem);
@@ -127,15 +131,9 @@ public class NoteEditFragment extends BaseFragment<NoteEditModel> implements Vie
         menu.clear();
     }
 
-    @LayoutRes
-    @Override
-    protected int getFragmentLayoutId() {
-        return R.layout.fragment_note_edit;
-    }
-
     @NonNull
     @Override
-    protected NoteEditModel onCreateModel() {
+    protected NoteEditModel onCreateModel(int modelOwner) {
         return getModel(modelOwner, NoteEditModel.class);
     }
 

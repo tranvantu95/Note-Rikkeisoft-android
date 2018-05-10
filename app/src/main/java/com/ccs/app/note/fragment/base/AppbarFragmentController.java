@@ -1,4 +1,4 @@
-package com.ccs.app.note.activity.fragment.base;
+package com.ccs.app.note.fragment.base;
 
 import android.arch.lifecycle.ViewModel;
 import android.os.Bundle;
@@ -15,13 +15,17 @@ import android.widget.ImageView;
 
 import com.ccs.app.note.R;
 
-public abstract class AppbarFragment<Model extends ViewModel> extends BaseFragment<Model> {
+public abstract class AppbarFragmentController<Model extends ViewModel> extends FragmentController<Model> {
 
     protected AppBarLayout appbar;
     protected Toolbar toolbar;
     protected TabLayout tabs;
     protected ImageView appbarImage;
     protected CollapsingToolbarLayout collapsingToolbar;
+
+    public AppbarFragmentController(BaseFragment view) {
+        super(view);
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

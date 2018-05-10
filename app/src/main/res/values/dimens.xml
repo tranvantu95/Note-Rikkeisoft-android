@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="divider_list">4dp</dimen>
+    <dimen name="divider_grid">2dp</dimen>
+
+</resources>

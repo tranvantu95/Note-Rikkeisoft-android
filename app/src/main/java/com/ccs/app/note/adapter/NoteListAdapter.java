@@ -1,4 +1,4 @@
-package com.ccs.app.note.custom.adapter;
+package com.ccs.app.note.adapter;
 
 import android.os.Handler;
 import android.support.annotation.LayoutRes;
@@ -6,17 +6,15 @@ import android.support.annotation.NonNull;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import com.ccs.app.note.R;
-import com.ccs.app.note.config.Debug;
-import com.ccs.app.note.custom.adapter.base.SwitchListAdapter;
+import com.ccs.app.note.adapter.base.SwitchListAdapter2;
 import com.ccs.app.note.db.entity.Note;
 import com.ccs.app.note.model.item.NoteItem;
 
-public class NoteListAdapter extends SwitchListAdapter<NoteItem, NoteListAdapter.ViewHolder> {
+public class NoteListAdapter extends SwitchListAdapter2<NoteItem, NoteListAdapter.ViewHolder> {
 
     private String orderColumn;
 
@@ -50,7 +48,7 @@ public class NoteListAdapter extends SwitchListAdapter<NoteItem, NoteListAdapter
         return new ViewHolder(this, view);
     }
 
-    public static class ViewHolder extends SwitchListAdapter.ViewHolder<NoteItem, NoteListAdapter> {
+    public static class ViewHolder extends SwitchListAdapter2.ViewHolder<NoteItem, NoteListAdapter> {
 
         private TextView date;
         private TextView note;

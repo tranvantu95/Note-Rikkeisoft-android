@@ -1,18 +1,13 @@
 package com.ccs.app.note.activity.base;
 
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.ccs.app.note.R;
 import com.ccs.app.note.config.Debug;
-import com.ccs.app.note.custom.adapter.base.SwitchListAdapter;
+import com.ccs.app.note.adapter.base.SwitchListAdapter2;
 import com.ccs.app.note.model.base.SwitchListModel;
 import com.ccs.app.note.utils.AppUtils;
 import com.ccs.app.note.utils.General;
@@ -39,7 +34,7 @@ public abstract class SwitchListActivity extends AppbarActivity {
             saveTypeView();
         }
 
-        Log.d(Debug.TAG + TAG, "onChangeTypeView " + SwitchListAdapter.getTypeView(typeView));
+        Log.d(Debug.TAG + TAG, "onChangeTypeView " + SwitchListAdapter2.getTypeView(typeView));
         onChangeTypeView(typeView);
 
         setChecked(typeView);
@@ -55,7 +50,7 @@ public abstract class SwitchListActivity extends AppbarActivity {
 
     private void setChecked(int typeView) {
         if(typeViewMenu == null) return;
-        Log.d(Debug.TAG + TAG, "setChecked " + SwitchListAdapter.getTypeView(typeView));
+        Log.d(Debug.TAG + TAG, "setChecked " + SwitchListAdapter2.getTypeView(typeView));
         AppUtils.clearChecked(typeViewMenu);
         AppUtils.setChecked(typeViewMenu.findItem(getTypeViewMenuItemId(typeView)), true);
     }
