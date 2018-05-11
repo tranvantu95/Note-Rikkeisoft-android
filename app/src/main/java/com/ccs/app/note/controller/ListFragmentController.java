@@ -1,6 +1,8 @@
 package com.ccs.app.note.controller;
 
 import android.arch.lifecycle.Observer;
+import android.arch.paging.DataSource;
+import android.arch.paging.PagedList;
 import android.os.Bundle;
 import android.support.annotation.Dimension;
 import android.support.annotation.NonNull;
@@ -10,17 +12,17 @@ import android.util.Log;
 import android.view.View;
 
 import com.ccs.app.note.R;
-import com.ccs.app.note.adapter.base.ListAdapter1;
 import com.ccs.app.note.config.Debug;
+import com.ccs.app.note.adapter.base.ListAdapter;
 import com.ccs.app.note.controller.base.BaseFragment;
 import com.ccs.app.note.controller.base.FragmentController;
 import com.ccs.app.note.model.base.ListModel;
 
 import java.util.List;
 
-public abstract class ListFragmentController1<Item,
+public abstract class ListFragmentController<Item,
         Model extends ListModel<Item>,
-        LA extends ListAdapter1<Item, ?>>
+        LA extends ListAdapter<Item, ?>>
         extends FragmentController<Model> {
 
     protected RecyclerView listView;
@@ -31,7 +33,7 @@ public abstract class ListFragmentController1<Item,
 
     protected int divider;
 
-    public ListFragmentController1(BaseFragment view) {
+    public ListFragmentController(BaseFragment view) {
         super(view);
     }
 
@@ -43,7 +45,8 @@ public abstract class ListFragmentController1<Item,
         listAdapter = onCreateListAdapter();
         divider = onCreateDivider();
 
-        observeItems();
+        if(listAdapter.getMode() == ListAdapter.RECYCLER_ADAPTER_MODE) observeItems();
+        else observePagedList();
     }
 
     @Override
@@ -65,6 +68,9 @@ public abstract class ListFragmentController1<Item,
 
     // abstract
     @NonNull
+    protected abstract PagedList.Config getPagedListConfig();
+
+    @NonNull
     protected abstract RecyclerView.LayoutManager onCreateLayoutManager();
 
     @NonNull
@@ -83,12 +89,35 @@ public abstract class ListFragmentController1<Item,
         });
     }
 
+    protected void observePagedList() {
+        observe(model.getPagedList(getPagedListConfig()), new Observer<PagedList<Item>>() {
+            @Override
+            public void onChanged(@Nullable PagedList<Item> items) {
+                if (items != null) updateListAdapter(items);
+            }
+        });
+    }
+
+    // set
+    protected void setDataSourceFactory(@Nullable DataSource.Factory<?, Item> factory) {
+        model.getDataSourceFactory().setValue(factory);
+    }
+
     // update
     protected void updateListAdapter(@NonNull List<Item> items) {
         Log.d(Debug.TAG + TAG, "updateListAdapter");
+        if(items instanceof PagedList) {
+            listAdapter.submitList((PagedList<Item>) items);
+            return;
+        }
         listAdapter.setItems(items);
         listAdapter.notifyDataSetChanged();
     }
+
+//    protected void updateListAdapter(@NonNull PagedList<Item> items) {
+//        Log.d(Debug.TAG + TAG, "updateListAdapter");
+//        listAdapter.submitList(items);
+//    }
 
     protected void updateListView() {
         Log.d(Debug.TAG + TAG, "updateListView");

@@ -23,11 +23,11 @@ import com.ccs.app.note.R;
 import com.ccs.app.note.adapter.NoteListAdapter;
 import com.ccs.app.note.app.MyApplication;
 import com.ccs.app.note.config.Debug;
-import com.ccs.app.note.adapter.base.ListAdapter2;
+import com.ccs.app.note.adapter.base.ListAdapter;
 import com.ccs.app.note.db.dao.NoteDao;
 import com.ccs.app.note.db.entity.Note;
 import com.ccs.app.note.controller.base.BaseFragment;
-import com.ccs.app.note.controller.SwitchListFragmentController2;
+import com.ccs.app.note.controller.SwitchListFragmentController;
 import com.ccs.app.note.model.MainModel;
 import com.ccs.app.note.model.NoteEditModel;
 import com.ccs.app.note.model.NoteListModel;
@@ -43,7 +43,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
 
-public class NoteListFragmentController extends SwitchListFragmentController2<NoteItem, NoteListModel, NoteListAdapter> {
+public class NoteListFragmentController extends SwitchListFragmentController<NoteItem, NoteListModel, NoteListAdapter> {
 
     private String orderColumn = Note.DATE_EDIT_COLUMN;
     private Menu sortTypeMenu;
@@ -145,6 +145,8 @@ public class NoteListFragmentController extends SwitchListFragmentController2<No
                 };
             }
         });
+        // or
+//        updateListAdapter(items);
     }
 
     @Override
@@ -155,7 +157,7 @@ public class NoteListFragmentController extends SwitchListFragmentController2<No
     }
 
     @Override
-    protected void updateListAdapter(@NonNull PagedList<NoteItem> noteItems) {
+    protected void updateListAdapter(@NonNull List<NoteItem> noteItems) {
         super.updateListAdapter(noteItems);
 
 //        NoteItem currentNote = getActivityModel(NoteEditModel.class).getNote().getValue();
@@ -258,7 +260,7 @@ public class NoteListFragmentController extends SwitchListFragmentController2<No
     @NonNull
     @Override
     protected NoteListAdapter onCreateListAdapter() {
-        return new NoteListAdapter(new ListAdapter2.OnItemClickListener() {
+        return new NoteListAdapter(ListAdapter.PAGED_LIST_ADAPTER_MODE, new ListAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(RecyclerView.ViewHolder viewHolder, View itemView, int position) {
 //                Toast.makeText(getContext(), "" + position, Toast.LENGTH_SHORT).show();

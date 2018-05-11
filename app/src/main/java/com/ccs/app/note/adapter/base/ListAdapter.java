@@ -1,39 +1,75 @@
 package com.ccs.app.note.adapter.base;
 
+import android.arch.paging.PagedListAdapter;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ccs.app.note.model.item.BaseItem;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ListAdapter1<Item, VH extends ListAdapter1.ViewHolder<Item, ?>>
-        extends RecyclerView.Adapter<VH> {
+public abstract class ListAdapter<Item, VH extends ListAdapter.ViewHolder<Item, ?>>
+        extends PagedListAdapter<Item, VH> {
+
+    protected static <Item extends BaseItem> DiffUtil.ItemCallback<Item> createDiffCallback(Class<Item> clazz) {
+        return new DiffUtil.ItemCallback<Item>() {
+            @Override
+            public boolean areItemsTheSame(Item oldItem, Item newItem) {
+                return oldItem.getId() == newItem.getId();
+            }
+
+            @Override
+            public boolean areContentsTheSame(Item oldItem, Item newItem) {
+                return oldItem.equals(newItem);
+            }
+        };
+    }
+
+    public static final int RECYCLER_ADAPTER_MODE = 1;
+    public static final int PAGED_LIST_ADAPTER_MODE = 2;
+
+    private int mode;
 
     private List<Item> items = new ArrayList<>();
 
     private OnItemClickListener onItemClickListener;
 
-    public ListAdapter1(@NonNull OnItemClickListener onItemClickListener) {
-        super();
+    public ListAdapter(int mode, @NonNull OnItemClickListener onItemClickListener, @NonNull DiffUtil.ItemCallback<Item> diffCallback) {
+        super(diffCallback);
+        this.mode = mode;
         this.onItemClickListener = onItemClickListener;
     }
 
     @Override
     public int getItemCount() {
+        if(mode == PAGED_LIST_ADAPTER_MODE) return super.getItemCount();
         return items.size();
     }
 
-    public Item getItem(int index) {
-        return items.get(index);
+    @Override
+    public Item getItem(int position) {
+        if(mode == PAGED_LIST_ADAPTER_MODE) return super.getItem(position);
+        return items.get(position);
     }
 
     public void addItem(Item item) {
         items.add(item);
+    }
+
+    //
+    public int getMode() {
+        return mode;
+    }
+
+    public void setMode(int mode) {
+        this.mode = mode;
     }
 
     public List<Item> getItems() {
@@ -52,6 +88,7 @@ public abstract class ListAdapter1<Item, VH extends ListAdapter1.ViewHolder<Item
         this.onItemClickListener = onItemClickListener;
     }
 
+    @NonNull
     @Override
     public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(getItemLayoutId(viewType), parent, false);
@@ -70,7 +107,7 @@ public abstract class ListAdapter1<Item, VH extends ListAdapter1.ViewHolder<Item
         holder.setItem(item, position);
     }
 
-    public static abstract class ViewHolder<Item, RA extends ListAdapter1<Item, ?>>
+    public static abstract class ViewHolder<Item, RA extends ListAdapter<Item, ?>>
             extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         protected RA adapter;

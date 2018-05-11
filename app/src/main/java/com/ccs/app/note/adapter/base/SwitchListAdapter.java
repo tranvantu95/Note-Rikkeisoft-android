@@ -5,8 +5,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.util.DiffUtil;
 import android.view.View;
 
-public abstract class SwitchListAdapter2<Item, VH extends SwitchListAdapter2.ViewHolder<Item, ?>>
-        extends ListAdapter2<Item, VH> {
+public abstract class SwitchListAdapter<Item, VH extends SwitchListAdapter.ViewHolder<Item, ?>>
+        extends ListAdapter<Item, VH> {
 
     public static final int LIST_VIEW = 1;
     public static final int GRID_VIEW = 2;
@@ -26,8 +26,8 @@ public abstract class SwitchListAdapter2<Item, VH extends SwitchListAdapter2.Vie
 
     private int typeView;
 
-    public SwitchListAdapter2(OnItemClickListener onItemClickListener, @NonNull DiffUtil.ItemCallback<Item> diffCallback) {
-        super(onItemClickListener, diffCallback);
+    public SwitchListAdapter(int mode, @NonNull OnItemClickListener onItemClickListener, @NonNull DiffUtil.ItemCallback<Item> diffCallback) {
+        super(mode, onItemClickListener, diffCallback);
     }
 
     public int getTypeView() {
@@ -59,8 +59,8 @@ public abstract class SwitchListAdapter2<Item, VH extends SwitchListAdapter2.Vie
     @LayoutRes
     protected abstract int getItemGridLayoutId(int viewType);
 
-    public static abstract class ViewHolder<Item, RA extends SwitchListAdapter2<Item, ?>>
-            extends ListAdapter2.ViewHolder<Item, RA> {
+    public static abstract class ViewHolder<Item, RA extends SwitchListAdapter<Item, ?>>
+            extends ListAdapter.ViewHolder<Item, RA> {
 
         public ViewHolder(RA adapter, View itemView) {
             super(adapter, itemView);
