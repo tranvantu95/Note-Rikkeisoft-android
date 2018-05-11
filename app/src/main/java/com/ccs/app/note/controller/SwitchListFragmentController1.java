@@ -1,4 +1,4 @@
-package com.ccs.app.note.fragment.base;
+package com.ccs.app.note.controller;
 
 import android.arch.lifecycle.Observer;
 import android.os.Bundle;
@@ -8,21 +8,23 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import com.ccs.app.note.config.Debug;
 import com.ccs.app.note.adapter.base.SwitchListAdapter2;
+import com.ccs.app.note.adapter.base.SwitchListAdapter1;
+import com.ccs.app.note.config.Debug;
+import com.ccs.app.note.controller.base.BaseFragment;
 import com.ccs.app.note.model.base.SwitchListModel;
 
-public abstract class SwitchListFragmentController2<Item,
+public abstract class SwitchListFragmentController1<Item,
         Model extends SwitchListModel<Item>,
-        LA extends SwitchListAdapter2<Item, ?>>
-        extends ListFragmentController2<Item, Model, LA> {
+        LA extends SwitchListAdapter1<Item, ?>>
+        extends ListFragmentController1<Item, Model, LA> {
 
     protected RecyclerView.LayoutManager linearLayoutManager;
     protected RecyclerView.LayoutManager gridLayoutManager;
 
     protected int dividerList, dividerGrid;
 
-    public SwitchListFragmentController2(BaseFragment view) {
+    public SwitchListFragmentController1(BaseFragment view) {
         super(view);
     }
 

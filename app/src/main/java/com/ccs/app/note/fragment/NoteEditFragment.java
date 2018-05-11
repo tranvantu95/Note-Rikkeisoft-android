@@ -1,10 +1,9 @@
 package com.ccs.app.note.fragment;
 
-import android.app.Activity;
 import android.support.annotation.LayoutRes;
 
 import com.ccs.app.note.R;
-import com.ccs.app.note.fragment.base.BaseFragment;
+import com.ccs.app.note.controller.base.BaseFragment;
 
 public class NoteEditFragment extends BaseFragment {
 

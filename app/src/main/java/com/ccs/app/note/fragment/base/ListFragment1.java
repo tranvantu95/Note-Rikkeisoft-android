@@ -16,10 +16,10 @@ import com.ccs.app.note.model.base.ListModel;
 
 import java.util.List;
 
-public abstract class ListFragmentController1<Item,
+public abstract class ListFragment1<Item,
         Model extends ListModel<Item>,
         LA extends ListAdapter1<Item, ?>>
-        extends FragmentController<Model> {
+        extends BaseFragment<Model> {
 
     protected RecyclerView listView;
 
@@ -28,10 +28,6 @@ public abstract class ListFragmentController1<Item,
     protected LA listAdapter;
 
     protected int divider;
-
-    public ListFragmentController1(BaseFragment view) {
-        super(view);
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

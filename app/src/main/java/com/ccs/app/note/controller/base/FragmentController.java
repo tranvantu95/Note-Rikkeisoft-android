@@ -1,4 +1,4 @@
-package com.ccs.app.note.fragment.base;
+package com.ccs.app.note.controller.base;
 
 import android.app.Activity;
 import android.app.Application;
@@ -9,8 +9,6 @@ import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -24,11 +22,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ccs.app.note.controller.Controller;
-import com.ccs.app.note.fragment.base.BaseFragment;
+import com.ccs.app.note.controller.iterface.FragmentLifecycle;
 import com.ccs.app.note.utils.ModelUtils;
 
-public abstract class FragmentController<Model extends ViewModel> extends Controller<BaseFragment> {
+public abstract class FragmentController<Model extends ViewModel> extends Controller<BaseFragment>
+        implements FragmentLifecycle {
 
     protected final String TAG = getClass().getSimpleName();
 
@@ -47,46 +45,64 @@ public abstract class FragmentController<Model extends ViewModel> extends Contro
         super(view);
     }
 
+    @Override
     public void onAttach(Activity activity) {}
 
+    @Override
     public void onAttach(Context context) {}
 
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         modelOwner = getModelOwner();
         model = onCreateModel(modelOwner);
     }
 
     @Nullable
+    @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return null;
     }
 
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {}
 
+    @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {}
 
+    @Override
     public void onStart() {}
 
+    @Override
     public void onResume() {}
 
+    @Override
     public void onPause() {}
 
+    @Override
     public void onStop() {}
 
+    @Override
     public void onDestroyView() {}
 
+    @Override
     public void onDestroy() {}
 
+    @Override
     public void onDetach() {}
 
+    @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {}
 
+    @Override
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {}
 
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {}
 
+    @Override
     public void onPrepareOptionsMenu(Menu menu) {}
 
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         return false;
     }

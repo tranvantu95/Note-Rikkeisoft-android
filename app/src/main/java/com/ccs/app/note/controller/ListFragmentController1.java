@@ -1,8 +1,6 @@
-package com.ccs.app.note.fragment.base;
+package com.ccs.app.note.controller;
 
 import android.arch.lifecycle.Observer;
-import android.arch.paging.DataSource;
-import android.arch.paging.PagedList;
 import android.os.Bundle;
 import android.support.annotation.Dimension;
 import android.support.annotation.NonNull;
@@ -12,13 +10,17 @@ import android.util.Log;
 import android.view.View;
 
 import com.ccs.app.note.R;
+import com.ccs.app.note.adapter.base.ListAdapter1;
 import com.ccs.app.note.config.Debug;
-import com.ccs.app.note.adapter.base.ListAdapter2;
+import com.ccs.app.note.controller.base.BaseFragment;
+import com.ccs.app.note.controller.base.FragmentController;
 import com.ccs.app.note.model.base.ListModel;
 
-public abstract class ListFragmentController2<Item,
+import java.util.List;
+
+public abstract class ListFragmentController1<Item,
         Model extends ListModel<Item>,
-        LA extends ListAdapter2<Item, ?>>
+        LA extends ListAdapter1<Item, ?>>
         extends FragmentController<Model> {
 
     protected RecyclerView listView;
@@ -29,7 +31,7 @@ public abstract class ListFragmentController2<Item,
 
     protected int divider;
 
-    public ListFragmentController2(BaseFragment view) {
+    public ListFragmentController1(BaseFragment view) {
         super(view);
     }
 
@@ -63,9 +65,6 @@ public abstract class ListFragmentController2<Item,
 
     // abstract
     @NonNull
-    protected abstract PagedList.Config getPagedListConfig();
-
-    @NonNull
     protected abstract RecyclerView.LayoutManager onCreateLayoutManager();
 
     @NonNull
@@ -76,23 +75,19 @@ public abstract class ListFragmentController2<Item,
 
     // observe
     protected void observeItems() {
-        observe(model.getPagedList(getPagedListConfig()), new Observer<PagedList<Item>>() {
+        observe(model.getItems(), new Observer<List<Item>>() {
             @Override
-            public void onChanged(@Nullable PagedList<Item> items) {
+            public void onChanged(@Nullable List<Item> items) {
                 if (items != null) updateListAdapter(items);
             }
         });
     }
 
-    // set
-    protected void setDataSourceFactory(@Nullable DataSource.Factory<?, Item> factory) {
-        model.getDataSourceFactory().setValue(factory);
-    }
-
     // update
-    protected void updateListAdapter(@NonNull PagedList<Item> items) {
+    protected void updateListAdapter(@NonNull List<Item> items) {
         Log.d(Debug.TAG + TAG, "updateListAdapter");
-        listAdapter.submitList(items);
+        listAdapter.setItems(items);
+        listAdapter.notifyDataSetChanged();
     }
 
     protected void updateListView() {

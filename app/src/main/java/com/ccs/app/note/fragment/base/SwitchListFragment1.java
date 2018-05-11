@@ -8,24 +8,20 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
-import com.ccs.app.note.adapter.base.SwitchListAdapter2;
 import com.ccs.app.note.adapter.base.SwitchListAdapter1;
+import com.ccs.app.note.adapter.base.SwitchListAdapter2;
 import com.ccs.app.note.config.Debug;
 import com.ccs.app.note.model.base.SwitchListModel;
 
-public abstract class SwitchListFragmentController1<Item,
+public abstract class SwitchListFragment1<Item,
         Model extends SwitchListModel<Item>,
         LA extends SwitchListAdapter1<Item, ?>>
-        extends ListFragmentController1<Item, Model, LA> {
+        extends ListFragment1<Item, Model, LA> {
 
     protected RecyclerView.LayoutManager linearLayoutManager;
     protected RecyclerView.LayoutManager gridLayoutManager;
 
     protected int dividerList, dividerGrid;
-
-    public SwitchListFragmentController1(BaseFragment view) {
-        super(view);
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

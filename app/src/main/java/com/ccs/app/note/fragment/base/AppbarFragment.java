@@ -15,17 +15,13 @@ import android.widget.ImageView;
 
 import com.ccs.app.note.R;
 
-public abstract class AppbarFragmentController<Model extends ViewModel> extends FragmentController<Model> {
+public abstract class AppbarFragment<Model extends ViewModel> extends BaseFragment<Model> {
 
     protected AppBarLayout appbar;
     protected Toolbar toolbar;
     protected TabLayout tabs;
     protected ImageView appbarImage;
     protected CollapsingToolbarLayout collapsingToolbar;
-
-    public AppbarFragmentController(BaseFragment view) {
-        super(view);
-    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {

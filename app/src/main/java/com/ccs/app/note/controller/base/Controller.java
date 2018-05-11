@@ -1,7 +1,9 @@
-package com.ccs.app.note.controller;
+package com.ccs.app.note.controller.base;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import com.ccs.app.note.controller.iterface.BaseView;
 
 import java.util.List;
 
