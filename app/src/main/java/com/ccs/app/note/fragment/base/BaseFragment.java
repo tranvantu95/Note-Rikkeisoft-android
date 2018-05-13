@@ -54,7 +54,7 @@ public abstract class BaseFragment<Model extends ViewModel> extends Fragment {
         Log.d(Debug.TAG + TAG, "onCreate");
 
         modelOwner = getModelOwner();
-        model = onCreateModel();
+        model = onCreateModel(modelOwner);
     }
 
     @Nullable
@@ -147,7 +147,7 @@ public abstract class BaseFragment<Model extends ViewModel> extends Fragment {
     protected abstract int getFragmentLayoutId();
 
     @NonNull
-    protected abstract Model onCreateModel();
+    protected abstract Model onCreateModel(int modelOwner);
 
     //
     protected int getModelOwner() {
@@ -165,22 +165,30 @@ public abstract class BaseFragment<Model extends ViewModel> extends Fragment {
     }
 
     // Model
+    @Nullable
     protected <Model extends ViewModel> Model getAppModel(Class<Model> clazz) {
+        if(getActivity() == null) return null;
         return ModelUtils.ofApp(getActivity().getApplication()).get(clazz);
     }
 
+    @Nullable
     protected <Model extends ViewModel> Model getActivityModel(Class<Model> clazz) {
+        if(getActivity() == null) return null;
         return ModelUtils.of(getActivity()).get(clazz);
     }
 
+    @Nullable
     protected <Model extends ViewModel> Model getParentFragmentModel(Class<Model> clazz) {
+        if(getParentFragment() == null) return null;
         return ModelUtils.of(getParentFragment()).get(clazz);
     }
 
+    @NonNull
     protected <Model extends ViewModel> Model getFragmentModel(Class<Model> clazz) {
         return ModelUtils.of(this).get(clazz);
     }
 
+    @Nullable
     protected <Model extends ViewModel> Model getModel(int owner, Class<Model> clazz) {
         switch (owner) {
             case APP_MODEL:

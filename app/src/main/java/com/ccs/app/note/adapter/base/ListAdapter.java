@@ -1,5 +1,6 @@
 package com.ccs.app.note.adapter.base;
 
+import android.arch.paging.PagedList;
 import android.arch.paging.PagedListAdapter;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -32,6 +33,20 @@ public abstract class ListAdapter<Item, VH extends ListAdapter.ViewHolder<Item, 
         };
     }
 
+    protected static <Item extends BaseItem> DiffUtil.ItemCallback<Item> createDiffCallback2(Class<Item> clazz) {
+        return new DiffUtil.ItemCallback<Item>() {
+            @Override
+            public boolean areItemsTheSame(Item oldItem, Item newItem) {
+                return oldItem.getKey().equals(newItem.getKey());
+            }
+
+            @Override
+            public boolean areContentsTheSame(Item oldItem, Item newItem) {
+                return oldItem.equals(newItem);
+            }
+        };
+    }
+
     public static final int RECYCLER_ADAPTER_MODE = 1;
     public static final int PAGED_LIST_ADAPTER_MODE = 2;
 
@@ -53,6 +68,7 @@ public abstract class ListAdapter<Item, VH extends ListAdapter.ViewHolder<Item, 
         return items.size();
     }
 
+    @Nullable
     @Override
     public Item getItem(int position) {
         if(mode == PAGED_LIST_ADAPTER_MODE) return super.getItem(position);
@@ -77,7 +93,12 @@ public abstract class ListAdapter<Item, VH extends ListAdapter.ViewHolder<Item, 
     }
 
     public void setItems(List<Item> items) {
-        this.items = items;
+        if(mode == PAGED_LIST_ADAPTER_MODE && items instanceof PagedList)
+            submitList((PagedList<Item>) items);
+        else {
+            this.items = items;
+            notifyDataSetChanged();
+        }
     }
 
     public OnItemClickListener getOnItemClickListener() {
@@ -137,6 +158,6 @@ public abstract class ListAdapter<Item, VH extends ListAdapter.ViewHolder<Item, 
     }
 
     public interface OnItemClickListener {
-        void onItemClick(RecyclerView.ViewHolder viewHolder, View itemView, int position);
+        void onItemClick(RecyclerView.ViewHolder viewHolder, View view, int position);
     }
 }

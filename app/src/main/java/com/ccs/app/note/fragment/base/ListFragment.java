@@ -100,18 +100,8 @@ public abstract class ListFragment<Item,
     // update
     protected void updateListAdapter(@NonNull List<Item> items) {
         Log.d(Debug.TAG + TAG, "updateListAdapter");
-        if(items instanceof PagedList) {
-            listAdapter.submitList((PagedList<Item>) items);
-            return;
-        }
         listAdapter.setItems(items);
-        listAdapter.notifyDataSetChanged();
     }
-
-//    protected void updateListAdapter(@NonNull PagedList<Item> items) {
-//        Log.d(Debug.TAG + TAG, "updateListAdapter");
-//        listAdapter.submitList(items);
-//    }
 
     protected void updateListView() {
         Log.d(Debug.TAG + TAG, "updateListView");

@@ -51,4 +51,14 @@ public class NoteItem extends Note implements BaseItem {
         super.setDateEdit(dateEdit);
         setDateEditString(Format.formatDate(getDateEdit()));
     }
+
+    @Override
+    public String getKey() {
+        return null;
+    }
+
+    @Override
+    public void setKey(String key) {
+
+    }
 }
