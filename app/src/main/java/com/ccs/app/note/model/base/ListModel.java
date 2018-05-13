@@ -42,7 +42,7 @@ public class ListModel<Item> extends ViewModel {
     }
 
     @NonNull
-    public LiveData<List<Item>> getItems() {
+    public MutableLiveData<List<Item>> getItems() {
         if(items == null) items = new MutableLiveData<>();
         return items;
     }
